@@ -1,6 +1,11 @@
+using BugTracker.Core.Constants;
 using BugTracker.Data;
+using BugTracker.ModelBinders;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.EntityFrameworkCore;
+using DateTimeModelBinderProvider = BugTracker.ModelBinders.DateTimeModelBinderProvider;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +17,14 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    .AddMvcOptions(options=>
+    {
+        options.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
+        options.ModelBinderProviders.Insert(1, new DoubleModelBinderProvider());
+        options.ModelBinderProviders.Insert(2, new DateTimeModelBinderProvider(FormatingConstants.NormalDateFormat));
+
+    });
 
 var app = builder.Build();
 
