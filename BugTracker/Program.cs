@@ -1,5 +1,5 @@
 using BugTracker.Core.Constants;
-using BugTracker.Data;
+using BugTracker.Infrastrructure.Data;
 using BugTracker.ModelBinders;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
