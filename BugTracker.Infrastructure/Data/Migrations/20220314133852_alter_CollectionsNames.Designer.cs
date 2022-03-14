@@ -4,6 +4,7 @@ using BugTracker.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BugTracker.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220314133852_alter_CollectionsNames")]
+    partial class alter_CollectionsNames
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -144,9 +146,6 @@ namespace BugTracker.Infrastructure.Data.Migrations
                         .HasMaxLength(320)
                         .HasColumnType("nvarchar(320)");
 
-                    b.Property<string>("EmployeeId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -158,8 +157,6 @@ namespace BugTracker.Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
-
-                    b.HasIndex("EmployeeId");
 
                     b.HasIndex("ProjectId");
 
@@ -511,10 +508,6 @@ namespace BugTracker.Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("BugTracker.Infrastructure.Data.Models.Employee", null)
-                        .WithMany("ProjectEmployees")
-                        .HasForeignKey("EmployeeId");
-
                     b.HasOne("BugTracker.Infrastructure.Data.Models.Project", null)
                         .WithMany("ProjectEmployees")
                         .HasForeignKey("ProjectId");
@@ -605,11 +598,6 @@ namespace BugTracker.Infrastructure.Data.Migrations
                     b.Navigation("DepartmentEmployees");
 
                     b.Navigation("Projects");
-                });
-
-            modelBuilder.Entity("BugTracker.Infrastructure.Data.Models.Employee", b =>
-                {
-                    b.Navigation("ProjectEmployees");
                 });
 
             modelBuilder.Entity("BugTracker.Infrastructure.Data.Models.Organization", b =>
