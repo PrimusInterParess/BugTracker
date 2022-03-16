@@ -1,0 +1,9 @@
+  501  git checkout -b
+  502  git checkout -b Dani
+  503  git checkout Master
+  504  git branch --list
+  505  git checkout Dani
+  506  git merge Master
+  507  git push origin Dani
+  508  git checkout Master
+  509  history

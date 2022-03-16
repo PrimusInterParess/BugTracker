@@ -1,0 +1,41 @@
+## bug
+??
+
+## organization
+- could have departments of its own??
+
+
+## project
+- ## tickets for each project?
+
+
+&&roles?
+## admin
+- teams of agents
+## agent
+*works on bugs/tickets
+*can modify to some point the ticket
+*could have stats
+
+## customer - can add
+*organization 
+-description page
+-each organization could have stats
+-departments/team members
+-projects
+
+*departments 
+-each department coutld have stats
+-team members
+*employees
+-could open bugs/tickets
+
+## department
+
+
+
+&&enums
+--type
+--status
+
+
