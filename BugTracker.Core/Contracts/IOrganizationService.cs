@@ -5,4 +5,6 @@ namespace BugTracker.Core.Contracts;
 public interface IOrganizationService
 {
     Dictionary<string, string> ValidateOrganization(AddOrganizationFormModel organization);
+
+    bool AddEntity(AddOrganizationFormModel organization);
 }

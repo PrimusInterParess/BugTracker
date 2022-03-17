@@ -28,7 +28,7 @@
 
         public ICollection<Bug> Bugs { get; set; } = new HashSet<Bug>();
 
-        public ICollection<Employee> ProjectEmployees { get; set; } = new HashSet<Employee>();
+        public ICollection<Employee> Employees { get; set; } = new HashSet<Employee>();
 
     }
 }

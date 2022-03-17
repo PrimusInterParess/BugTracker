@@ -10,4 +10,6 @@ public interface IBugService
 
     ICollection<PriorityViewModel> GetPriorities();
     ICollection<StatusViewModel> GetStatus();
+
+    ICollection<BugViewModel> GetAllBugs();
 }

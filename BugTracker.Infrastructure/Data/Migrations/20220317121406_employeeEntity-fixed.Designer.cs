@@ -4,6 +4,7 @@ using BugTracker.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BugTracker.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(BugTrackerDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220317121406_employeeEntity-fixed")]
+    partial class employeeEntityfixed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -120,14 +122,24 @@ namespace BugTracker.Infrastructure.Data.Migrations
                         .HasMaxLength(320)
                         .HasColumnType("nvarchar(320)");
 
+                    b.Property<string>("EmployeeId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("ProjectId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("ProjectId");
 
                     b.ToTable("Employees");
                 });
@@ -225,21 +237,6 @@ namespace BugTracker.Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Status");
-                });
-
-            modelBuilder.Entity("EmployeeProject", b =>
-                {
-                    b.Property<string>("EmployeesId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProjectsId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("EmployeesId", "ProjectsId");
-
-                    b.HasIndex("ProjectsId");
-
-                    b.ToTable("EmployeeProject");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -505,6 +502,14 @@ namespace BugTracker.Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("BugTracker.Infrastructure.Data.Models.Employee", null)
+                        .WithMany("ProjectEmployees")
+                        .HasForeignKey("EmployeeId");
+
+                    b.HasOne("BugTracker.Infrastructure.Data.Models.Project", null)
+                        .WithMany("ProjectEmployees")
+                        .HasForeignKey("ProjectId");
+
                     b.Navigation("Department");
                 });
 
@@ -517,21 +522,6 @@ namespace BugTracker.Infrastructure.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Department");
-                });
-
-            modelBuilder.Entity("EmployeeProject", b =>
-                {
-                    b.HasOne("BugTracker.Infrastructure.Data.Models.Employee", null)
-                        .WithMany()
-                        .HasForeignKey("EmployeesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BugTracker.Infrastructure.Data.Models.Project", null)
-                        .WithMany()
-                        .HasForeignKey("ProjectsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -592,6 +582,11 @@ namespace BugTracker.Infrastructure.Data.Migrations
                     b.Navigation("Projects");
                 });
 
+            modelBuilder.Entity("BugTracker.Infrastructure.Data.Models.Employee", b =>
+                {
+                    b.Navigation("ProjectEmployees");
+                });
+
             modelBuilder.Entity("BugTracker.Infrastructure.Data.Models.Organization", b =>
                 {
                     b.Navigation("OrganizationDepartments");
@@ -605,6 +600,8 @@ namespace BugTracker.Infrastructure.Data.Migrations
             modelBuilder.Entity("BugTracker.Infrastructure.Data.Models.Project", b =>
                 {
                     b.Navigation("Bugs");
+
+                    b.Navigation("ProjectEmployees");
                 });
 
             modelBuilder.Entity("BugTracker.Infrastructure.Data.Models.Status", b =>

@@ -5,7 +5,9 @@
     using Models.ViewModels.Bug;
     using Models.ViewModels.Priority;
     using Models.ViewModels.Status;
-    using static BugTracker.Models.Constants.MessageConstants;
+    using Models.ViewModels.Employee;
+
+    using static Models.Constants.MessageConstants;
 
     public class BugService : IBugService
     {
@@ -52,9 +54,21 @@
             })
                 .ToList();
 
-        private bool AddBug()
-        {
-            throw new NotImplementedException();
-        }
+        public ICollection<BugViewModel> GetAllBugs()
+            =>
+                this.repo.All<Bug>().Select(b => new BugViewModel()
+                {
+                    Id = b.Id,
+                    AppearedOn = b.AppearedOn,
+                    DueDate = b.DueDate,
+                    BugEmployees = b.BugEmployees.Select(e => new EmployeeViewModel()
+                    {
+                        Id = e.Id,
+                        Name = e.Name,
+                        Department = e.Department.Name
+                    }).ToList(),
+
+                }).ToList();
+
     }
 }

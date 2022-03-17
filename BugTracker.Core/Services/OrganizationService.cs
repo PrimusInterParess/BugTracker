@@ -28,5 +28,32 @@ namespace BugTracker.Core.Services
 
             return result;
         }
+
+        public bool AddEntity(AddOrganizationFormModel organization)
+        {
+            var isSuccessfully = true;
+
+            Organization organizationData = new Organization()
+            {
+                Name = organization.Name,
+                Country = organization.Country,
+                StreetName = organization.StreetName,
+                StreetNumber = organization.StreetNumber,
+                TownName = organization.TownName
+
+            };
+
+            try
+            {
+                this._repo.Add(organizationData);
+                this._repo.SaveChanges();
+            }
+            catch (Exception)
+            {
+                isSuccessfully = false;
+            }
+
+            return isSuccessfully;
+        }
     }
 }

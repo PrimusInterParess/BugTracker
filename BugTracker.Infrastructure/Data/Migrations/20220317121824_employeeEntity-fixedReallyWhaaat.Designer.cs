@@ -4,6 +4,7 @@ using BugTracker.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BugTracker.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(BugTrackerDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220317121824_employeeEntity-fixedReallyWhaaat")]
+    partial class employeeEntityfixedReallyWhaaat
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -229,15 +231,15 @@ namespace BugTracker.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("EmployeeProject", b =>
                 {
-                    b.Property<string>("EmployeesId")
+                    b.Property<string>("EmployeeProjectsId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ProjectsId")
+                    b.Property<string>("ProjectEmployeesId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("EmployeesId", "ProjectsId");
+                    b.HasKey("EmployeeProjectsId", "ProjectEmployeesId");
 
-                    b.HasIndex("ProjectsId");
+                    b.HasIndex("ProjectEmployeesId");
 
                     b.ToTable("EmployeeProject");
                 });
@@ -521,15 +523,15 @@ namespace BugTracker.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("EmployeeProject", b =>
                 {
-                    b.HasOne("BugTracker.Infrastructure.Data.Models.Employee", null)
+                    b.HasOne("BugTracker.Infrastructure.Data.Models.Project", null)
                         .WithMany()
-                        .HasForeignKey("EmployeesId")
+                        .HasForeignKey("EmployeeProjectsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BugTracker.Infrastructure.Data.Models.Project", null)
+                    b.HasOne("BugTracker.Infrastructure.Data.Models.Employee", null)
                         .WithMany()
-                        .HasForeignKey("ProjectsId")
+                        .HasForeignKey("ProjectEmployeesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -49,4 +49,9 @@ public class BugController : Controller
         return RedirectToAction("Index", "Home");
     }
 
+    public IActionResult All()
+    {
+
+    }
+
 }
