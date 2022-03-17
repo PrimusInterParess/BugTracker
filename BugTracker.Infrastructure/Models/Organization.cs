@@ -1,7 +1,9 @@
-﻿namespace BugTracker.Infrastructure.Data.Models
+﻿using BugTracker.Infrastructure.ModelsConstants;
+
+namespace BugTracker.Infrastructure.Data.Models
 {
     using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
+  using static IntegerModelConstants;
 
     public class Organization
     {
@@ -9,13 +11,23 @@
         public string Id { get; init; } = Guid.NewGuid().ToString();
 
         [Required]
-        
+        [StringLength(DefaultMaxLength)]
+
         public string Name { get; init; }
 
-        public string AddressId { get; set; }
+        public string? StreetName { get; set; }
 
-        [ForeignKey(nameof(AddressId))]
-        public Address Address { get; set; }
+        [Required]
+        [StringLength(DefaultMaxLength)]
+        public string StreetNumber { get; set; }
+        [Required]
+
+        [StringLength(DefaultMaxLength)]
+        public string TownName { get; set; }
+
+        [Required]
+        [StringLength(DefaultMaxLength)]
+        public string Country { get; set; }
 
         public ICollection<Department> OrganizationDepartments { get; set; } = new HashSet<Department>();
     }

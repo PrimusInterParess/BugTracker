@@ -38,6 +38,8 @@ namespace BugTracker.Core.Services
             DbSet<T>().Remove(entity);
         }
 
+       
+
         private DbSet<T> DbSet<T>() where T : class
         {
             return dbContext.Set<T>();

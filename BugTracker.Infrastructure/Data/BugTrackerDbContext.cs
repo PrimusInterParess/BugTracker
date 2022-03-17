@@ -18,7 +18,6 @@
                 optionsBuilder.UseSqlServer("Server=.;Database=BugTracker;Trusted_Connection=True;MultipleActiveResultSets=true");
             }
         }
-        public DbSet<Address> Addresses { get; set; }
 
         public DbSet<Organization> Organizations { get; set; }
 

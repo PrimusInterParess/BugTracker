@@ -8,5 +8,8 @@
 
         public const string InvalidDateMessage = "Invalid date";
 
+        public const string DefaultStringLengthErrorMessage = "{0} must be between {2} and {1} characters";
+
+        public const string InvalidOrganizationName = "Invalid organization name";
     }
 }

@@ -15,7 +15,8 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services
     .AddScoped<IRepository, DbRepository>()
     .AddScoped<IBugService, BugService>()
-    .AddScoped<IValidationService, ValidationService>();
+    .AddScoped<IValidationService, ValidationService>()
+    .AddScoped<IOrganizationService,OrganizationService>();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
     {
