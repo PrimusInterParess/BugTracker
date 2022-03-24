@@ -1,4 +1,6 @@
-﻿namespace BugTracker.Controllers;
+﻿using Microsoft.AspNetCore.Authorization;
+
+namespace BugTracker.Controllers;
 
 using Core.Contracts;
 using Models.ViewModels.Bug;
@@ -15,6 +17,7 @@ public class BugController : Controller
         this._service = service;
         this._validationService = validationService;
     }
+    [Authorize]
     public IActionResult Add()
     {
         return View(new AddBugFormModel()
@@ -25,6 +28,7 @@ public class BugController : Controller
 
     }
 
+    [Authorize]
     [HttpPost]
     public IActionResult Add(AddBugFormModel bug)
     {
@@ -34,7 +38,7 @@ public class BugController : Controller
         {
             foreach (var kvp in result)
             {
-                ModelState.AddModelError(kvp.Key,kvp.Value);
+                ModelState.AddModelError(kvp.Key, kvp.Value);
             }
         }
 
@@ -45,13 +49,22 @@ public class BugController : Controller
             return View(bug);
         }
 
+        var save = _service.Save(bug);
+
+        if (save == false)
+        {
+            //TODO: add error message if could not successfully save the entity
+            return View(bug);
+        }
+
 
         return RedirectToAction("Index", "Home");
     }
 
+    [Authorize] 
     public IActionResult All()
     {
-
+        return View();
     }
 
 }

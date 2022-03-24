@@ -4,6 +4,7 @@ using BugTracker.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BugTracker.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(BugTrackerDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220324083816_add_entity-comment")]
+    partial class add_entitycomment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -182,22 +184,22 @@ namespace BugTracker.Infrastructure.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "611b9fe0-3385-4669-b9a0-0e759ae1c9c8",
+                            Id = "e7f9c712-b972-4818-9d11-72a9e5e9cee4",
                             Name = "low"
                         },
                         new
                         {
-                            Id = "52fc1280-4e16-4562-88b1-0c83c0f7ac8e",
+                            Id = "68c62de4-5920-4a5a-b506-a54c468094c4",
                             Name = "normal"
                         },
                         new
                         {
-                            Id = "1f542da6-2d66-475e-8786-0335140ac457",
+                            Id = "756bb541-1f74-4f3d-b808-0e11d150d7ee",
                             Name = "urgent"
                         },
                         new
                         {
-                            Id = "9710597b-d6be-45b2-9996-732ea39f4c83",
+                            Id = "20fefa88-ecc7-4263-867c-8d7629015bb0",
                             Name = "emergency"
                         });
                 });
@@ -251,27 +253,27 @@ namespace BugTracker.Infrastructure.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "54750b38-de9d-41d2-b6c0-d430e491571a",
+                            Id = "5a4bc77c-45cf-4ca6-9d13-bb002fa69ab8",
                             Name = "new"
                         },
                         new
                         {
-                            Id = "d06372f3-f41f-456e-a7d3-0c911323026e",
+                            Id = "3bdeca53-8666-4c97-872e-287fda168b7a",
                             Name = "in progress"
                         },
                         new
                         {
-                            Id = "c674a7d4-2da0-491f-acd7-5fc62a83de8c",
+                            Id = "26314a38-2d6d-45fa-98da-0931b40de885",
                             Name = "on hold"
                         },
                         new
                         {
-                            Id = "d6208e32-a70b-46d0-91e8-3b877784118a",
+                            Id = "777764d8-3471-4a30-9f63-b2a374acd91f",
                             Name = "solved"
                         },
                         new
                         {
-                            Id = "638ed63b-c782-4f10-95e7-903f459320f9",
+                            Id = "78e8584c-554e-4384-9042-4ca47cf7f948",
                             Name = "closed"
                         });
                 });
@@ -326,21 +328,21 @@ namespace BugTracker.Infrastructure.Data.Migrations
 
                     b.Property<string>("BugId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BugId");
 
                     b.HasIndex("UserId");
 
@@ -660,15 +662,13 @@ namespace BugTracker.Infrastructure.Data.Migrations
                 {
                     b.HasOne("BugTracker.Infrastructure.Data.Models.Bug", "Bug")
                         .WithMany("Comments")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("BugId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("BugTracker.Infrastructure.Data.Models.Employee", "User")
-                        .WithMany("Comments")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Bug");
 
@@ -751,11 +751,6 @@ namespace BugTracker.Infrastructure.Data.Migrations
                     b.Navigation("DepartmentEmployees");
 
                     b.Navigation("Projects");
-                });
-
-            modelBuilder.Entity("BugTracker.Infrastructure.Data.Models.Employee", b =>
-                {
-                    b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("BugTracker.Infrastructure.Data.Models.Organization", b =>

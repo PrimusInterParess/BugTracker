@@ -54,6 +54,35 @@
             })
                 .ToList();
 
+        public bool Save(AddBugFormModel bug)
+        {
+            var bugData = new Bug()
+
+            {
+                AppearedOn = bug.AppearedOn,
+                DueDate = bug.DueDate,
+                Description = bug.Description,
+                PriorityId = bug.PriorityId,
+                StatusId = bug.StatusId,
+                ProjectId = bug.PriorityId,
+                Title = bug.Title,
+                //TODo : add employees features
+            };
+
+            try
+            {
+                repo.Add(bugData);
+                repo.SaveChanges();
+                return true;
+
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+
+        }
+
         public ICollection<BugViewModel> GetAllBugs()
             =>
                 this.repo.All<Bug>().Select(b => new BugViewModel()

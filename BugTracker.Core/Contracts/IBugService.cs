@@ -11,5 +11,6 @@ public interface IBugService
     ICollection<PriorityViewModel> GetPriorities();
     ICollection<StatusViewModel> GetStatus();
 
+    bool Save(AddBugFormModel bug);
     ICollection<BugViewModel> GetAllBugs();
 }

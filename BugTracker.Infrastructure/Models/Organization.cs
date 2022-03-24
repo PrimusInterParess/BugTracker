@@ -29,6 +29,6 @@ namespace BugTracker.Infrastructure.Data.Models
         [StringLength(DefaultMaxLength)]
         public string Country { get; set; }
 
-        public ICollection<Department> OrganizationDepartments { get; set; } = new HashSet<Department>();
+        public ICollection<Department> Departments { get; set; } = new HashSet<Department>();
     }
 }

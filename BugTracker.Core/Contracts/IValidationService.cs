@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Security.Claims;
 
 namespace BugTracker.Core.Contracts
 {
@@ -11,6 +7,8 @@ namespace BugTracker.Core.Contracts
         (bool, DateTime) ValidateDate(string model);
 
         bool AreDatesValid(DateTime appearedOn, DateTime isAfterDate);
+
+        bool IsAdmin(ClaimsPrincipal user);
 
     }
 }

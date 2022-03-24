@@ -9,6 +9,8 @@
 
         public const int DescriptionMaxLength = 500;
 
+        public const int PhoneNumberMaxLength = 30;
+
       
     }
 }

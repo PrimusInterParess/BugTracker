@@ -16,5 +16,8 @@ namespace BugTracker.Core.Contracts
 
         void Remove<T>(T entity) where T : class;
 
+        public IQueryable<T> Include<T>(T entity) where T : class;
+
+
     }
 }

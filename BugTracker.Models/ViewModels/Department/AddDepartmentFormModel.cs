@@ -13,6 +13,9 @@
         [StringLength(DefaultMaxLength, MinimumLength = DefaultMinLength, ErrorMessage = DefaultStringLengthErrorMessage)]
         public string Organization { get; set; }
 
+        //TODO FIX it!!!
+        public string? OrganizationId { get; set; }
+
         [Required]
         [StringLength(DescriptionMaxLength, MinimumLength = DefaultMinLength, ErrorMessage = DefaultStringLengthErrorMessage)]
         public string DepartmentSubject { get; set; }

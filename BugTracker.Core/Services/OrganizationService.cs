@@ -17,6 +17,10 @@ namespace BugTracker.Core.Services
 
         public Dictionary<string, string> ValidateOrganization(AddOrganizationFormModel organization)
         {
+            var organizations =
+                _repo.All<Organization>().FirstOrDefault(o => o.Name == organization.Name);
+
+
             var result = new Dictionary<string, string>();
 
             var exists = this._repo.All<Organization>().Any(o => o.Name == organization.Name);
@@ -29,9 +33,9 @@ namespace BugTracker.Core.Services
             return result;
         }
 
-        public bool AddEntity(AddOrganizationFormModel organization)
+        public string AddEntity(AddOrganizationFormModel organization)
         {
-            var isSuccessfully = true;
+            var organizationId = string.Empty;
 
             Organization organizationData = new Organization()
             {
@@ -47,13 +51,14 @@ namespace BugTracker.Core.Services
             {
                 this._repo.Add(organizationData);
                 this._repo.SaveChanges();
+                organizationId = organizationData.Id;
             }
             catch (Exception)
             {
-                isSuccessfully = false;
+                organizationId = null;
             }
 
-            return isSuccessfully;
+            return organizationId;
         }
     }
 }

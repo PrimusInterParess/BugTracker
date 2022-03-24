@@ -2,8 +2,10 @@
 {
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+    using BugTracker.Infrastructure.Models;
 
     using static ModelsConstants.IntegerModelConstants;
+
     public class Bug
     {
         [Key]
@@ -37,6 +39,8 @@
         public Project Project { get; set; }
 
         public ICollection<Employee> BugEmployees { get; set; } = new HashSet<Employee>();
+
+        public ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
     }
 }

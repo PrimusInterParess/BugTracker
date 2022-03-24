@@ -6,5 +6,5 @@ public interface IOrganizationService
 {
     Dictionary<string, string> ValidateOrganization(AddOrganizationFormModel organization);
 
-    bool AddEntity(AddOrganizationFormModel organization);
+    string AddEntity(AddOrganizationFormModel organization);
 }

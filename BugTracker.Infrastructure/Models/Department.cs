@@ -14,9 +14,9 @@
         [StringLength(DefaultMaxLength)]
         public string Name { get; set; }
 
+        [ForeignKey(nameof(Organization))]
         public string OrganizationId { get; set; }
 
-        [ForeignKey(nameof(OrganizationId))]
         public Organization Organization { get; set; }
 
         public string DepartmentSubject { get; set; }

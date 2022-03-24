@@ -1,4 +1,7 @@
-﻿namespace BugTracker.Infrastructure.Data
+﻿using BugTracker.Infrastructure.Models;
+using Microsoft.AspNetCore.Identity;
+
+namespace BugTracker.Infrastructure.Data
 {
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
@@ -32,31 +35,92 @@
         public DbSet<Employee> Employees { get; set; }
 
         public DbSet<Bug> Bugs { get; set; }
+        public DbSet<Administrator> Administrators { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+
+            builder.Entity<Organization>()
+                .HasMany(o => o.Departments)
+                .WithOne(d => d.Organization)
+                .HasForeignKey(k => k.OrganizationId);
+
             builder.Entity<Employee>()
                 .HasOne(e => e.Department)
                 .WithMany(d => d.DepartmentEmployees)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            //builder.Entity<Priority>().HasData(new []
-            //{
-            //    new Priority(){Name = "low"},
-            //    new Priority(){Name = "normal"},
-            //    new Priority(){Name = "urgent"},
-            //    new Priority(){Name = "emergency"}
-            //});
+            builder.Entity<Administrator>()
+                .HasOne<IdentityUser>()
+                .WithOne()
+                .HasForeignKey<Administrator>(a => a.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            //builder.Entity<Status>().HasData(new[]
-            //{
-            //    new Status(){Name = "new"},
-            //    new Status(){Name = "in progress"},
-            //    new Status(){Name = "on hold"},
-            //    new Status(){Name = "solved"},
-            //    new Status(){Name = "closed"}
-            //});
+            builder.Entity<Bug>().HasOne(b => b.Priority)
+                .WithMany(p => p.PriorityBugs)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Bug>().HasOne(b => b.Status)
+                .WithMany(s => s.StatusBugs)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Bug>()
+                .HasOne(b => b.Project)
+                .WithMany(p => p.Bugs)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Bug>()
+                .HasMany(b => b.BugEmployees)
+                .WithMany(e => e.EmployeeBugs);
+
+            builder.Entity<Bug>()
+                .HasMany(b => b.Comments)
+                .WithOne(c => c.Bug)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Department>()
+                .HasOne(d => d.Organization)
+                .WithMany(o => o.Departments)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Department>()
+                .HasMany(d => d.Projects)
+                .WithOne(p => p.Department)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Department>()
+                .HasMany(d => d.DepartmentEmployees)
+                .WithOne(e => e.Department)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Project>()
+                .HasMany(p => p.Employees)
+                .WithMany(e => e.Projects);
+
+            builder.Entity<Comment>()
+                .HasOne(c => c.User)
+                .WithMany(u => u.Comments)
+                .OnDelete(DeleteBehavior.Restrict);
+            
+
+            builder.Entity<Priority>().HasData(new[]
+            {
+                new Priority(){Name = "low"},
+                new Priority(){Name = "normal"},
+                new Priority(){Name = "urgent"},
+                new Priority(){Name = "emergency"}
+            });
+
+            builder.Entity<Status>().HasData(new[]
+            {
+                new Status(){Name = "new"},
+                new Status(){Name = "in progress"},
+                new Status(){Name = "on hold"},
+                new Status(){Name = "solved"},
+                new Status(){Name = "closed"}
+            });
 
             base.OnModelCreating(builder);
 

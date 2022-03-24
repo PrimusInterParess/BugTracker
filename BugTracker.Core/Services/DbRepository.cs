@@ -38,7 +38,11 @@ namespace BugTracker.Core.Services
             DbSet<T>().Remove(entity);
         }
 
-       
+        public IQueryable<T> Include<T>(T entity) where T : class
+        {
+          return DbSet<T>().Include(e=>entity);
+        }
+
 
         private DbSet<T> DbSet<T>() where T : class
         {

@@ -8,7 +8,9 @@
         public const int EmailNameMaxLength = 320;
 
         public const int DescriptionMaxLength = 500;
+        public const int PhoneNumberMaxLength = 30;
+        public const int PhoneNumberMinLength = 4;
 
-      
+
     }
 }

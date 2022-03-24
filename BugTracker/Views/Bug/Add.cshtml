@@ -23,6 +23,7 @@
                 <div class="form-group">
                     <label asp-for="StatusId"></label>
                     <select asp-for="StatusId" class="form-control">
+                        <option value="none">none</option>
                         @foreach (var status in Model.StatusList)
                         {
                             <option value="@status.Id">@status.Name</option>
@@ -33,6 +34,7 @@
                 <div class="form-group">
                     <label asp-for="PriorityId" ></label>
                     <select asp-for="PriorityId" class="form-control">
+                        <option value="none">none</option>
                         @foreach (var priority in Model.Priorities)
                         {
                             <option value="@priority.Id">@priority.Name</option>
