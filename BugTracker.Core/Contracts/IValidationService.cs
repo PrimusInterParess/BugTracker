@@ -7,8 +7,7 @@ namespace BugTracker.Core.Contracts
         (bool, DateTime) ValidateDate(string model);
 
         bool AreDatesValid(DateTime appearedOn, DateTime isAfterDate);
-
-        bool IsAdmin(ClaimsPrincipal user);
+    
 
     }
 }

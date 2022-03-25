@@ -1,39 +1,51 @@
-﻿using System.Reflection.Metadata;
-using BugTracker.Infrastructure.Data.Models;
-
-namespace BugTracker.Core.Services
+﻿namespace BugTracker.Core.Services
 {
+    using System.Security.Claims;
+    using Infrastructure.Data;
+    using BugTracker.Infrastructure.Data.Models;
     using Contracts;
     using Models.ViewModels.Organization;
-    using static BugTracker.Models.Constants.MessageConstants;
-    public class OrganizationService:IOrganizationService
-    {
-        private readonly IRepository _repo;
 
-        public OrganizationService(IRepository repo)
+    using static Models.Constants.MessageConstants;
+
+    public class OrganizationService : IOrganizationService
+    {
+        private readonly BugTrackerDbContext _repo;
+
+        public OrganizationService(BugTrackerDbContext repo)
         {
-            this._repo=repo;
+            this._repo = repo;
         }
 
         public Dictionary<string, string> ValidateOrganization(AddOrganizationFormModel organization)
         {
             var organizations =
-                _repo.All<Organization>().FirstOrDefault(o => o.Name == organization.Name);
+                _repo.Organizations.FirstOrDefault(o => o.Name == organization.Name);
 
 
             var result = new Dictionary<string, string>();
 
-            var exists = this._repo.All<Organization>().Any(o => o.Name == organization.Name);
+            var exists = this._repo.Organizations.Any(o => o.Name == organization.Name);
 
             if (exists)
             {
-                result.Add(nameof(organization.Name),InvalidOrganizationName);
+                result.Add(nameof(organization.Name), InvalidOrganizationName);
             }
 
             return result;
         }
 
-        public string AddEntity(AddOrganizationFormModel organization)
+        public string GetAdminId(ClaimsPrincipal user)
+        {
+            var userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var adminId = this._repo.Administrators.Where(a => a.UserId == userId).Select(a=>a.Id);
+
+
+            return adminId;
+        }
+
+        public string Save(AddOrganizationFormModel organization, string userId)
         {
             var organizationId = string.Empty;
 
@@ -43,8 +55,8 @@ namespace BugTracker.Core.Services
                 Country = organization.Country,
                 StreetName = organization.StreetName,
                 StreetNumber = organization.StreetNumber,
-                TownName = organization.TownName
-
+                TownName = organization.TownName,
+                AdministratiorId = userId
             };
 
             try
@@ -60,5 +72,6 @@ namespace BugTracker.Core.Services
 
             return organizationId;
         }
+
     }
 }

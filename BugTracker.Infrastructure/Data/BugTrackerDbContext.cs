@@ -35,6 +35,7 @@ namespace BugTracker.Infrastructure.Data
         public DbSet<Employee> Employees { get; set; }
 
         public DbSet<Bug> Bugs { get; set; }
+
         public DbSet<Administrator> Administrators { get; set; }
         public DbSet<Comment> Comments { get; set; }
 
@@ -42,10 +43,24 @@ namespace BugTracker.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
 
-            builder.Entity<Organization>()
-                .HasMany(o => o.Departments)
-                .WithOne(d => d.Organization)
-                .HasForeignKey(k => k.OrganizationId);
+
+            //migrationBuilder.AddForeignKey(
+            //    name: "FK_Organizations_Administrators_AdministratiorId",
+            //    table: "Organizations",
+            //    column: "AdministratiorId",
+            //    principalTable: "Administrators",
+            //    principalColumn: "Id",
+            //    onDelete: ReferentialAction.Cascade);
+
+            builder.Entity<Administrator>().HasOne(a => a.Organization).WithOne(o => o.Administrator)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            
+               
+            //builder.Entity<Organization>()
+            //    .HasMany(o => o.Departments)
+            //    .WithOne(d => d.Organization)
+            //    .HasForeignKey(k => k.OrganizationId);
 
             builder.Entity<Employee>()
                 .HasOne(e => e.Department)

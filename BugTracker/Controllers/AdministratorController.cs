@@ -1,27 +1,52 @@
-﻿using System.ComponentModel;
-using BugTracker.Models.ViewModels.Administrator;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-
-namespace BugTracker.Controllers
+﻿namespace BugTracker.Controllers
 {
+    using System.ComponentModel;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+    using Models.ViewModels.Administrator;
+    using Core.Contracts;
+    using Infrastructure;
+
+    using static Models.Constants.MessageConstants;
+
     public class AdministratorController:Controller
     {
+        private readonly IAdministratorService _service;
+        public AdministratorController(IAdministratorService service)
+        {
+            _service = service;
+        }
+
         [DisplayName ("Register as admin")]
         [Authorize]
-        public IActionResult RegisterAsAdmin()
+        public IActionResult Register()
         {
             return View();
         }
 
         [HttpPost]
         [Authorize]
-        public IActionResult RegisterAsAdmin(RegisterAdminFormModel admin)
+        public IActionResult Register(RegisterAdminFormModel admin)
         {
+            var userId = this.User.GetId();
 
+            var alreadyExists = _service.AlreadyExists(userId);
 
-            return View(admin);
+            if (ModelState.IsValid == false)
+            {
+                return View(admin);
+            }
+
+            if (alreadyExists)
+            {
+                ModelState.AddModelError(String.Empty, InvalidAttempt);
+
+                return View(admin);
+            }
+
+            var registered = _service.Register(admin, userId);
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }

@@ -28,9 +28,8 @@
         [StringLength(PhoneNumberMaxLength)]
         public string PhoneNumber { get; set; }
 
-        public string OrganizationId { get; set; }
-
-        [ForeignKey(nameof(OrganizationId))]
+        public string? OrganizationId { get; set; }
+     
         public Organization? Organization { get; set; }
 
         public string UserId { get; set; }

@@ -15,5 +15,9 @@
         public const string InvalidOrganizationName = "Invalid organization name";
 
         public const string InvalidDepartmentName = "Invalid department name";
+
+        public const string InvalidAttempt = "Invalid attempt name";
+
+
     }
 }

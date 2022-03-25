@@ -1,9 +1,10 @@
-﻿using BugTracker.Infrastructure.ModelsConstants;
-
-namespace BugTracker.Infrastructure.Data.Models
+﻿namespace BugTracker.Infrastructure.Data.Models
 {
+    using System.ComponentModel.DataAnnotations.Schema;
+    using BugTracker.Infrastructure.Models;
     using System.ComponentModel.DataAnnotations;
-  using static IntegerModelConstants;
+    using static ModelsConstants.IntegerModelConstants;
+    using ModelsConstants;
 
     public class Organization
     {
@@ -28,6 +29,10 @@ namespace BugTracker.Infrastructure.Data.Models
         [Required]
         [StringLength(DefaultMaxLength)]
         public string Country { get; set; }
+
+        public string AdministratiorId { get; set; }
+        [ForeignKey(nameof(AdministratiorId))]
+        public Administrator Administrator { get; set; }
 
         public ICollection<Department> Departments { get; set; } = new HashSet<Department>();
     }
