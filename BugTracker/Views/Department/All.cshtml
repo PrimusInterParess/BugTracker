@@ -1,0 +1,11 @@
+﻿@model BugTracker.Models.ServiceModels.Department.DepartmentListModel
+
+<div class="list-group">
+    @foreach (var deparment in @Model.Departments)
+    {
+
+        <div class="mt-2 mb-2">
+            <a href="/Department/Department?departmentId=@deparment.Id" class="list-group-item list-group-item-action">@deparment.Name</a>
+        </div>
+    }
+</div>

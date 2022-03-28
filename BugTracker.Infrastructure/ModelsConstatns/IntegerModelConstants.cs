@@ -2,7 +2,7 @@
 {
     public class IntegerModelConstants
     {
-        public const int DefaultMinLength = 5;
+        public const int DefaultMinLength = 4;
         public const int DefaultMaxLength = 100;
 
         public const int EmailNameMaxLength = 320;

@@ -18,7 +18,8 @@ builder.Services
     .AddScoped<IValidationService, ValidationService>()
     .AddScoped<IOrganizationService,OrganizationService>()
     .AddScoped<IDepartmentService,DepartmentService>()
-    .AddScoped<IAdministratorService,AdministratorService>();
+    .AddScoped<IAdministratorService,AdministratorService>()
+    .AddScoped<IUserService,UserService>();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
     {

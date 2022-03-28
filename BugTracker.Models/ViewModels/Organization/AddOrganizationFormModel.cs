@@ -27,5 +27,8 @@
             ErrorMessage = DefaultStringLengthErrorMessage)]
         public string Country { get; set; }
 
+        [Required]
+        public string LogoUrl { get; set; }
+
     }
 }

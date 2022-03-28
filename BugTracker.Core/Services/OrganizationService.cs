@@ -1,4 +1,8 @@
-﻿namespace BugTracker.Core.Services
+﻿using BugTracker.Models.ServiceModels;
+using BugTracker.Models.ServiceModels.Department;
+using BugTracker.Models.ServiceModels.Organization;
+
+namespace BugTracker.Core.Services
 {
     using System.Security.Claims;
     using Infrastructure.Data;
@@ -22,12 +26,9 @@
             var organizations =
                 _repo.Organizations.FirstOrDefault(o => o.Name == organization.Name);
 
-
             var result = new Dictionary<string, string>();
 
-            var exists = this._repo.Organizations.Any(o => o.Name == organization.Name);
-
-            if (exists)
+            if (organizations !=null)
             {
                 result.Add(nameof(organization.Name), InvalidOrganizationName);
             }
@@ -35,14 +36,28 @@
             return result;
         }
 
-        public string GetAdminId(ClaimsPrincipal user)
+       
+
+        public OrganizationServiceModel GetOrganization(string adminId)
         {
-            var userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
+            var organization = _repo.Organizations.ToList().Where(o => o.AdministratiorId == adminId).Select(o =>
+                new OrganizationServiceModel()
+                {
+                    Id = o.Id,
+                    Name = o.Name,
+                    Country = o.Country,
+                    TownName = o.TownName,
+                    StreetName = o.StreetName,
+                    StreetNumber = o.StreetNumber,
+                    LogoUrl = o.LogoUrl,
+                    Departments = o.Departments.Select(d => new DepartmentServiceModel()
+                    {
+                        Id = d.Id,
+                        Name = d.Name
+                    }).ToList()
+                }).FirstOrDefault();
 
-            var adminId = this._repo.Administrators.Where(a => a.UserId == userId).Select(a=>a.Id);
-
-
-            return adminId;
+            return organization;
         }
 
         public string Save(AddOrganizationFormModel organization, string userId)
@@ -56,7 +71,8 @@
                 StreetName = organization.StreetName,
                 StreetNumber = organization.StreetNumber,
                 TownName = organization.TownName,
-                AdministratiorId = userId
+                AdministratiorId = userId,
+                LogoUrl = organization.LogoUrl
             };
 
             try

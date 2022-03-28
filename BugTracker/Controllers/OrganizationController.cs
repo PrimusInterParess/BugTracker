@@ -10,11 +10,17 @@
     {
         private readonly IOrganizationService _service;
         private readonly IValidationService _ValidationService;
+        private readonly IUserService _userService;
 
-        public OrganizationController(IOrganizationService service, IValidationService validationService)
+        public OrganizationController(
+            IOrganizationService service,
+            IValidationService validationService,
+            IUserService userService)
         {
             this._ValidationService = validationService;
             this._service = service;
+            this._userService = userService;
+
         }
 
         [Authorize]
@@ -29,7 +35,7 @@
         {
             var result = this._service.ValidateOrganization(organization);
 
-            var adminId = this._service.GetAdminId(this.User);
+            var adminId = this._userService.GetAdminId(this.User);
 
             var isSuccessfully = string.Empty;
 
@@ -47,7 +53,7 @@
             }
             else
             {
-                isSuccessfully = this._service.Save(organization,adminId);
+                isSuccessfully = this._service.Save(organization, adminId);
 
                 if (isSuccessfully == null)
                 {
@@ -56,16 +62,20 @@
                     return View(organization);
                 }
 
-                return RedirectToAction("Info", nameof(Organization));
+                return RedirectToAction("MyOrganization", nameof(Organization));
             }
 
 
         }
 
-        //[Authorize]
-        //public IActionResult Info()
-        //{
+        [Authorize]
+        public IActionResult MyOrganization()
+        {
+            var adminId = this._userService.GetAdminId(this.User);
 
-        //}
+            var organization = _service.GetOrganization(adminId);
+
+            return View(organization);
+        }
     }
 }

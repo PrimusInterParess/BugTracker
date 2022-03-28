@@ -23,19 +23,19 @@
 
         public Dictionary<string, string> ValidateBug(AddBugFormModel bug)
         {
-            var result = new Dictionary<string, string>();
+            var errors = new Dictionary<string, string>();
 
             var appearedDate = bug.AppearedOn;
             var dueDate = bug.DueDate;
 
             if (this.validationService.AreDatesValid(appearedDate, dueDate) == false)
             {
-                result.Add(nameof(bug.DueDate), InvalidDateMessage);
-                result.Add(nameof(bug.AppearedOn), InvalidDateMessage);
+                errors.Add(nameof(bug.DueDate), InvalidDateMessage);
+                errors.Add(nameof(bug.AppearedOn), InvalidDateMessage);
             }
 
 
-            return result;
+            return errors;
         }
 
         public ICollection<PriorityViewModel> GetPriorities()

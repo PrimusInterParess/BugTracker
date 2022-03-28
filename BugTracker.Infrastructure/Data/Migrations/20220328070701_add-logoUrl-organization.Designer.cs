@@ -4,6 +4,7 @@ using BugTracker.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BugTracker.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(BugTrackerDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220328070701_add-logoUrl-organization")]
+    partial class addlogoUrlorganization
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -193,22 +195,22 @@ namespace BugTracker.Infrastructure.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "86e585b9-f31a-473a-945b-0e4ff68be493",
+                            Id = "39edeecc-4acd-49fa-a4cf-2053d3bb91c4",
                             Name = "low"
                         },
                         new
                         {
-                            Id = "12148187-706f-4f12-b9ee-dc332ea94215",
+                            Id = "4bc0f610-7d49-4db3-85b7-42f076493767",
                             Name = "normal"
                         },
                         new
                         {
-                            Id = "825874ea-55df-46ca-a0ae-5bdc220f1a23",
+                            Id = "a6ed0c66-4f82-4c50-a7ce-df0e71938ac2",
                             Name = "urgent"
                         },
                         new
                         {
-                            Id = "859435a7-6fff-4690-855d-9e9278046ed5",
+                            Id = "a0de7398-728d-468f-8fed-9d7b23e217d1",
                             Name = "emergency"
                         });
                 });
@@ -262,27 +264,27 @@ namespace BugTracker.Infrastructure.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "cbaacce5-9e11-48fb-b6a6-366ab91c6e99",
+                            Id = "e3a67592-8e24-402f-9fec-bf48b0458b67",
                             Name = "new"
                         },
                         new
                         {
-                            Id = "2f54f0b4-cc0b-419a-b757-9b0eab5abc38",
+                            Id = "96268c0a-a4f8-40ac-8427-68b2ffa48502",
                             Name = "in progress"
                         },
                         new
                         {
-                            Id = "291631ab-c704-4934-ac43-7f50f191a2da",
+                            Id = "485033da-da62-44d1-8330-2daf31a1a26c",
                             Name = "on hold"
                         },
                         new
                         {
-                            Id = "d9d25a1d-6cad-432e-8eaf-f59693d6c5dc",
+                            Id = "c09d42da-fb29-4e41-8f41-9cf53274657e",
                             Name = "solved"
                         },
                         new
                         {
-                            Id = "d4b814c1-5360-4555-9d93-2ae6921e8634",
+                            Id = "6be2b56d-41df-4e18-a406-f31c929d001e",
                             Name = "closed"
                         });
                 });

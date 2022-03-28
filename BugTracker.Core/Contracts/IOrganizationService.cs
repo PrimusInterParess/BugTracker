@@ -1,4 +1,6 @@
 ﻿using System.Security.Claims;
+using BugTracker.Models.ServiceModels;
+using BugTracker.Models.ServiceModels.Organization;
 
 namespace BugTracker.Core.Contracts;
 
@@ -10,5 +12,5 @@ public interface IOrganizationService
 
     string Save(AddOrganizationFormModel organization,string UserId);
 
-    string GetAdminId(ClaimsPrincipal user);
+    OrganizationServiceModel GetOrganization(string adminId);
 }

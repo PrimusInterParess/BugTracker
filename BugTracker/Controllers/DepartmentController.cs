@@ -1,23 +1,31 @@
-﻿namespace BugTracker.Controllers
+﻿using BugTracker.Models.ServiceModels.Department;
+using BugTracker.Models.ServiceModels.Organization;
+
+namespace BugTracker.Controllers
 {
     using Core.Contracts;
     using Models.ViewModels.Department;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Authorization;
 
-
     public class DepartmentController : Controller
     {
-        private readonly IDepartmentService _service;
+        private readonly IDepartmentService _departmentService; 
+        private readonly IOrganizationService _organizationService;
+        private readonly IUserService _userService;
 
-        public DepartmentController(IDepartmentService service)
+        public DepartmentController(IDepartmentService departmentService, IUserService userService, IOrganizationService organizationService)
         {
-            this._service = service;
+            this._departmentService = departmentService;
+            this._organizationService = organizationService;
+            this._userService = userService;
+         
         }
 
         [Authorize]
         public IActionResult Add()
         {
+            
             return View();
         }
 
@@ -25,7 +33,11 @@
         [Authorize]
         public IActionResult Add(AddDepartmentFormModel department)
         {
-            var result = this._service.ValidateDepartment(department);
+            var organizationId = GetOrganizationId();
+
+            department.OrganizationId = organizationId;
+
+            var result = this._departmentService.ValidateDepartment(department);
 
             if (result.Count > 0)
             {
@@ -40,7 +52,7 @@
                 return View(department);
             }
 
-            var save = this._service.Save(department);
+            var save = this._departmentService.Save(department);
 
             if (save==false)
             {
@@ -49,6 +61,30 @@
 
             return RedirectToAction("Index", "Home");
 
+        }
+
+      [Authorize]
+        public IActionResult All()
+        {
+            var organizationIdd = this.GetOrganizationId();
+
+            var departmentsList = new DepartmentListModel()
+            {
+                Departments = this._departmentService.GetAllDepartments(organizationIdd)
+            };
+
+            return View(departmentsList);
+        }
+
+
+        public IActionResult Department(string departmentId)
+        {
+            return View();
+        }
+        private string GetOrganizationId()
+        {
+            var organizationModel = this._organizationService.GetOrganization(_userService.GetAdminId(this.User));
+            return organizationModel.Id;
         }
     }
 }

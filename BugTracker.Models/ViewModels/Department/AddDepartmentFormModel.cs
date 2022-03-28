@@ -9,10 +9,6 @@
         [StringLength(DefaultMaxLength,MinimumLength = DefaultMinLength,ErrorMessage = DefaultStringLengthErrorMessage)]
         public string Name { get; set; }
 
-        [Required]
-        [StringLength(DefaultMaxLength, MinimumLength = DefaultMinLength, ErrorMessage = DefaultStringLengthErrorMessage)]
-        public string Organization { get; set; }
-
         //TODO FIX it!!!
         public string? OrganizationId { get; set; }
 

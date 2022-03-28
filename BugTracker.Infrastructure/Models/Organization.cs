@@ -13,10 +13,13 @@
 
         [Required]
         [StringLength(DefaultMaxLength)]
-
         public string Name { get; init; }
 
+        [Required]
         public string? StreetName { get; set; }
+
+        [Required]
+        public string LogoUrl { get; set; }
 
         [Required]
         [StringLength(DefaultMaxLength)]
