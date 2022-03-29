@@ -1,5 +1,5 @@
 ﻿using BugTracker.Models.ServiceModels.Department;
-using BugTracker.Models.ServiceModels.Organization;
+using BugTracker.Models.ViewModels.Organization;
 
 namespace BugTracker.Controllers
 {
@@ -25,7 +25,6 @@ namespace BugTracker.Controllers
         [Authorize]
         public IActionResult Add()
         {
-            
             return View();
         }
 
@@ -79,7 +78,9 @@ namespace BugTracker.Controllers
 
         public IActionResult Department(string departmentId)
         {
-            return View();
+            var department = _departmentService.GetDepartment(departmentId);
+
+            return View(department);
         }
         private string GetOrganizationId()
         {

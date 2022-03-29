@@ -21,8 +21,4 @@
 		<ProjectReference Include="..\BugTracker.Models\BugTracker.Models.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Views\Project\" />
-	</ItemGroup>
-
 </Project>

@@ -14,5 +14,6 @@ namespace BugTracker.Core.Contracts
 
         bool Save(AddDepartmentFormModel department);
         ICollection<DepartmentServiceModel> GetAllDepartments(string organizationId);
+        DepartmentViewModel GetDepartment(string departmentId);
     }
 }

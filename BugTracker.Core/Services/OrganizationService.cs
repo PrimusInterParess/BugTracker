@@ -1,6 +1,7 @@
 ﻿using BugTracker.Models.ServiceModels;
 using BugTracker.Models.ServiceModels.Department;
-using BugTracker.Models.ServiceModels.Organization;
+using BugTracker.Models.ViewModels.Organization;
+using Microsoft.EntityFrameworkCore;
 
 namespace BugTracker.Core.Services
 {
@@ -38,10 +39,12 @@ namespace BugTracker.Core.Services
 
        
 
-        public OrganizationServiceModel GetOrganization(string adminId)
+        public OrganizationVIewModel GetOrganization(string adminId)
         {
-            var organization = _repo.Organizations.ToList().Where(o => o.AdministratiorId == adminId).Select(o =>
-                new OrganizationServiceModel()
+            var organization = _repo.Organizations
+                .Include(o=>o.Departments)
+                .Where(o => o.AdministratiorId == adminId).Select(o =>
+                new OrganizationVIewModel()
                 {
                     Id = o.Id,
                     Name = o.Name,

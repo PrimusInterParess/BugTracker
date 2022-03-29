@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using BugTracker.Models.ServiceModels.Department;
 
-namespace BugTracker.Models.ServiceModels.Organization
+namespace BugTracker.Models.ViewModels.Organization
 {
-    public class OrganizationServiceModel
+    public class OrganizationVIewModel
     {
         public string Id { get; init; }
 

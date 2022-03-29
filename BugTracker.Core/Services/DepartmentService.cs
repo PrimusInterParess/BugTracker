@@ -1,4 +1,6 @@
 ﻿using BugTracker.Models.ServiceModels.Department;
+using BugTracker.Models.ServiceModels.Employee;
+using BugTracker.Models.ServiceModels.Project;
 using Microsoft.EntityFrameworkCore;
 
 namespace BugTracker.Core.Services
@@ -68,7 +70,7 @@ namespace BugTracker.Core.Services
             var departments = this._repo.Organizations.Include(o => o.Departments).Where(o => o.Id == organizationId)
                 .FirstOrDefault();
 
-            var resutl = 
+            var resutl =
                 this._repo
                     .Departments
                     .Include(d => d.Organization)
@@ -82,6 +84,30 @@ namespace BugTracker.Core.Services
 
             return resutl;
         }
+
+        public DepartmentViewModel GetDepartment(string departmentId)
+        => this._repo
+                .Departments
+                .Include(d => d.Projects)
+                .Include(d => d.DepartmentEmployees)
+                .ToList()
+                .Where(d => d.Id == departmentId)
+                .Select(d => new DepartmentViewModel()
+                {
+                    Id = d.Id,
+                    Name = d.Name,
+                    DepartmentSubject = d.DepartmentSubject,
+                    Projects = d.Projects.Select(p => new ProjectServiceModel()
+                    {
+                        Id = p.Id,
+                        Name = p.Name
+                    }).OrderBy(d => d).ToList(),
+                    DepartmentEmployees = d.DepartmentEmployees.Select(e => new EmployeeServiceModel()
+                    {
+                        Id = e.Id,
+                        Name = e.Name
+                    }).OrderBy(e => e).ToList()
+                }).FirstOrDefault();
 
 
     }

@@ -5,7 +5,7 @@
     {
 
         <div class="mt-2 mb-2">
-            <a href="/Department/Department?departmentId=@deparment.Id" class="list-group-item list-group-item-action">@deparment.Name</a>
-        </div>
+         <a asp-controller="Department" asp-action="Department" asp-route-departmentId="@deparment.Id" asp-area="" class="btn btn-secondary text-center">@deparment.Name</a>
+         </div>
     }
 </div>

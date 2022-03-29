@@ -1,1 +1,33 @@
-﻿
+﻿@model BugTracker.Models.ViewModels.Department.DepartmentViewModel
+
+<div class="offset-sm-2  col-lg-8 col-sm-12 offset-xl-3 col-xl-6 mb-3 mt-3">
+    <div class="card" style="width: 25rem;">
+        <div class="card-body">
+            <p class="heading-margin text-center">
+                <b>
+                    Department name
+                </b>
+            </p>
+            <p class="card-title  heading-margin text-center ">
+                @Model.Name
+            </p>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item heading-margin text-center">
+                <p>
+                    <b>Department Subject</b>
+                </p> @Model.DepartmentSubject
+            </li>
+        </ul>
+      @*  <div class="card-body text-center">
+            <a  class="btn btn-secondary btn-lg active" role="button" asp-route="@Model.Id" asp-area="" asp-controller="Project" asp-action="AllProjects">View projects</a>
+        </div>
+        <div class="card-body text-center">
+            <a  class="btn btn-secondary btn-lg active" role="button" asp-route="@Model.Id" asp-area="" asp-controller="Department" asp-action="AllProjects">View employees</a>
+        </div>*@
+    </div>
+
+    <div>
+        <a asp-controller="Project" asp-action="Add" asp-route-departmentId="@Model.Id" asp-area="" class="btn btn-secondary text-center">Add project</a>
+    </div>
+</div>
