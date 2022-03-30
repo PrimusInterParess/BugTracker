@@ -67,10 +67,10 @@ namespace BugTracker.Controllers
         {
             var organizationIdd = this.GetOrganizationId();
 
-            var departmentsList = new DepartmentListModel()
-            {
-                Departments = this._departmentService.GetAllDepartments(organizationIdd)
-            };
+            var departmentsList =
+
+                this._departmentService.GetAllDepartments(organizationIdd);
+            
 
             return View(departmentsList);
         }
@@ -84,7 +84,7 @@ namespace BugTracker.Controllers
         }
         private string GetOrganizationId()
         {
-            var organizationModel = this._organizationService.GetOrganization(_userService.GetAdminId(this.User));
+            var organizationModel = this._organizationService.GetOrganizationByAdminId(_userService.GetAdminId(this.User));
             return organizationModel.Id;
         }
     }

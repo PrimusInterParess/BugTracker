@@ -1,4 +1,6 @@
-﻿namespace BugTracker.Controllers
+﻿using BugTracker.Models.ServiceModels.Organization;
+
+namespace BugTracker.Controllers
 {
     using BugTracker.Infrastructure.Data.Models;
     using Microsoft.AspNetCore.Authorization;
@@ -68,12 +70,29 @@
 
         }
 
+       [Authorize]
+        public IActionResult Edit(string organizationId)
+        {
+            var organization = _service.GetOrganizationById(organizationId);
+
+            return View(organization);
+        }
+
+        [Authorize]
+      public IActionResult Edit(OrganizationServiceEditModel organization)
+        {
+            
+            return View();
+        }
+
+
+
         [Authorize]
         public IActionResult MyOrganization()
         {
             var adminId = this._userService.GetAdminId(this.User);
 
-            var organization = _service.GetOrganization(adminId);
+            var organization = _service.GetOrganizationByAdminId(adminId);
 
             return View(organization);
         }

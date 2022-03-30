@@ -1,42 +1,41 @@
 ﻿@model BugTracker.Models.ViewModels.Organization.OrganizationVIewModel
 
-<div class="offset-sm-2  col-lg-8 col-sm-12 offset-xl-3 col-xl-6 mb-3 mt-3">
-    <div class="card" style="width: 25rem;">
-        <img class="card-img-top" src="@Model.LogoUrl" alt="Card image cap">
-        <div class="card-body">
-            <p class="heading-margin text-center">
-                <b>
-                    Organization name
-                </b>
-            </p>
-            <p class="card-title  heading-margin text-center ">
-                @Model.Name
-            </p>
-        </div>
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item heading-margin text-center">
-                <p>
-                    <b>Country</b>
-                </p> @Model.Country
-            </li>
-            <li class="list-group-item heading-margin text-center">
-                <p>
-                    Town
-                </p>
-                @Model.TownName
-            </li>
-            <li class="list-group-item heading-margin text-center">
-                <p>
+<div class="row">
+    <div class="offset-sm-2  col-lg-8 col-sm-12 offset-xl-3 col-xl-6 mb-3 mt-3">
+        <div class="card" style="width: 25rem;">
+            <img class="card-img-top" src="@Model.LogoUrl" alt="Card image cap">
+            <div class="card-body">
+                <p class="heading-margin text-center">
                     <b>
-                        Street
+                        Organization name
                     </b>
                 </p>
-                @Model.StreetName - @Model.StreetNumber
-            </li>
-        </ul>
-        <div class="card-body text-center">
-            <a  class="btn btn-secondary btn-lg active" role="button" asp-area="" asp-controller="Department" asp-action="All">View Departments</a>
-        </div>
+                <p class="card-title  heading-margin text-center ">
+                    @Model.Name
+                </p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item heading-margin text-center">
+                    <p>
+                        <b>Country</b>
+                    </p> @Model.Country
+                </li>
+                <li class="list-group-item heading-margin text-center">
+                    <p>
+                        Town
+                    </p>
+                    @Model.TownName
+                </li>
+                <li class="list-group-item heading-margin text-center">
+                    <p>
+                        <b>
+                            Street
+                        </b>
+                    </p>
+                    @Model.StreetName - @Model.StreetNumber
+                </li>
+            </ul>
+            <a asp-controller="Organization" asp-action="Edit" asp-route-organizationId="@Model.Id" asp-area="" class="btn btn-secondary btn-lg" style="width: 25rem;">Edit</a>
+          </div>
     </div>
-   
- </div>
+</div>

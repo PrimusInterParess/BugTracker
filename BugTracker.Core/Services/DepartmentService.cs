@@ -79,7 +79,8 @@ namespace BugTracker.Core.Services
                 new DepartmentServiceModel()
                 {
                     Id = d.Id,
-                    Name = d.Name
+                    Name = d.Name,
+                    DepartmentSubject = d.DepartmentSubject
                 }).ToList();
 
             return resutl;

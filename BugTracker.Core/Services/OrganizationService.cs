@@ -1,5 +1,6 @@
 ﻿using BugTracker.Models.ServiceModels;
 using BugTracker.Models.ServiceModels.Department;
+using BugTracker.Models.ServiceModels.Organization;
 using BugTracker.Models.ViewModels.Organization;
 using Microsoft.EntityFrameworkCore;
 
@@ -37,9 +38,25 @@ namespace BugTracker.Core.Services
             return result;
         }
 
-       
+        public OrganizationServiceEditModel GetOrganizationById(string organizationId)
+        {
+            var organization = _repo.Organizations.Where(o => o.Id == organizationId).Select(o =>
+                new OrganizationServiceEditModel()
+                {
+                    Id = o.Id,
+                    Country = o.Country,
+                    LogoUrl = o.LogoUrl,
+                    StreetName = o.StreetName,
+                    StreetNumber = o.StreetNumber,
+                    Name = o.Name,
+                    TownName = o.TownName
 
-        public OrganizationVIewModel GetOrganization(string adminId)
+                }).FirstOrDefault();
+
+            return organization;
+        }
+
+        public OrganizationVIewModel GetOrganizationByAdminId(string adminId)
         {
             var organization = _repo.Organizations
                 .Include(o=>o.Departments)
@@ -56,7 +73,8 @@ namespace BugTracker.Core.Services
                     Departments = o.Departments.Select(d => new DepartmentServiceModel()
                     {
                         Id = d.Id,
-                        Name = d.Name
+                        Name = d.Name,
+                        DepartmentSubject = d.DepartmentSubject
                     }).ToList()
                 }).FirstOrDefault();
 
@@ -91,6 +109,8 @@ namespace BugTracker.Core.Services
 
             return organizationId;
         }
+
+       
 
     }
 }
