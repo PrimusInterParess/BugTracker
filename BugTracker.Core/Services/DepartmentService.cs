@@ -65,9 +65,13 @@ namespace BugTracker.Core.Services
             }
         }
 
-        public ICollection<DepartmentServiceModel> GetAllDepartments(string organizationId)
+        public List<DepartmentServiceModel> GetAllDepartments(string organizationId)
         {
-            var departments = this._repo.Organizations.Include(o => o.Departments).Where(o => o.Id == organizationId)
+            var departments = this
+                ._repo
+                .Organizations
+                .Include(o => o.Departments)
+                .Where(o => o.Id == organizationId)
                 .FirstOrDefault();
 
             var resutl =
@@ -109,7 +113,6 @@ namespace BugTracker.Core.Services
                         Name = e.Name
                     }).OrderBy(e => e).ToList()
                 }).FirstOrDefault();
-
 
     }
 }

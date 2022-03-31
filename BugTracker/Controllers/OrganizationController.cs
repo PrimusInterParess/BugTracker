@@ -79,6 +79,7 @@ namespace BugTracker.Controllers
         }
 
         [Authorize]
+        [HttpPost]
       public IActionResult Edit(OrganizationServiceEditModel organization)
         {
             

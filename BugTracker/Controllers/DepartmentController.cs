@@ -70,7 +70,6 @@ namespace BugTracker.Controllers
             var departmentsList =
 
                 this._departmentService.GetAllDepartments(organizationIdd);
-            
 
             return View(departmentsList);
         }

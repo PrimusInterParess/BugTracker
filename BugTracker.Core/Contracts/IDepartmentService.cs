@@ -13,7 +13,7 @@ namespace BugTracker.Core.Contracts
         Dictionary<string, string> ValidateDepartment(AddDepartmentFormModel department);
 
         bool Save(AddDepartmentFormModel department);
-        ICollection<DepartmentServiceModel> GetAllDepartments(string organizationId);
+       List<DepartmentServiceModel> GetAllDepartments(string organizationId);
         DepartmentViewModel GetDepartment(string departmentId);
     }
 }
