@@ -9,7 +9,7 @@ namespace BugTracker.Core.Contracts
 {
     public interface IUserService
     {
-        string GetAdminId(ClaimsPrincipal user);
-        string GetUserId(ClaimsPrincipal user);
+        string? GetAdminId(string user);
+       
     }
 }

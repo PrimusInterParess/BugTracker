@@ -23,18 +23,26 @@
                     <ul class="navbar-nav flex-grow-1">
                         <div class="dropdown">
                             <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                               Add
+                                Add
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                 <li> <a class="nav-link text-dark" asp-area="" asp-controller="Bug" asp-action="Add">Bug</a></li>
                                 <li><a class="nav-link text-dark" asp-area="" asp-controller="Organization" asp-action="Add">Organization</a></li>
                                 <li><a class="nav-link text-dark" asp-area="" asp-controller="Department" asp-action="Add">Department</a></li>
                                 <li> <a class="nav-link text-dark" asp-area="" asp-controller="Project" asp-action="Add">Project</a></li>
+                                <li> <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="Add">Employee</a></li>
                             </ul>
                         </div>
-                        <li>
-                            <a class="btn" asp-area="" asp-controller="Organization" asp-action="MyOrganization">My organization</a>
-                        </li>
+                        <div class="dropdown">
+                            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                View
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a class="btn" asp-area="" asp-controller="Organization" asp-action="MyOrganization">My organization</a></li>
+                                <li> <a class="nav-link text-dark" asp-area="" asp-controller="Department" asp-action="All">All Departments</a></li>
+                            </ul>
+                        </div>
+                        
                     </ul>
                     <partial name="_LoginPartial" />
                     </div>

@@ -4,30 +4,31 @@
     ViewData["Title"] = "Add";
 }
 
-<h1>Add department</h1>
 
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="container">
+<div class="row mt-5">
+    <div class="mt-5 offset-sm-2  col-lg-8 col-sm-12 offset-xl-3 col-xl-6">
+        <h2 class="heading-margin text-center">Add department</h2>
         <form asp-action="Add">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+                <input asp-for="Name" class="form-control" placeholder="Enter name here.."/>
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label asp-for="DepartmentSubject" class="control-label"></label>
-                <input asp-for="DepartmentSubject" class="form-control" />
+                <input asp-for="DepartmentSubject" class="form-control"  placeholder="Enter department subject here.."/>
                 <span asp-validation-for="DepartmentSubject" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <div class="mt-3">
-                    <input type="submit" value="Create" class="btn btn-primary" />
+                    <input type="submit" value="Create" class="btn btn-primary"/>
                 </div>
             </div>
         </form>
     </div>
+</div>
 </div>
 
 @section Scripts {

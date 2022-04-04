@@ -4,43 +4,42 @@
     ViewData["Title"] = "Add";
 }
 
-<hr />
 <div class="row">
     <div class="offset-sm-2  col-lg-8 col-sm-12 offset-xl-3 col-xl-6">
         <h2 class="heading-margin text-center">Add Organization</h2>
         <form asp-action="Add">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control"/>
+            <div class="form-group mb-3">
+                <label asp-for="Name" class="control-label">Organization name</label>
+                <input asp-for="Name" class="form-control"  placeholder="Enter name here.."/>
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="StreetName" class="control-label"></label>
-                <input asp-for="StreetName" class="form-control"/>
+            <div class="form-group mb-3">
+                <label asp-for="StreetName" class="control-label">Street name</label>
+                <input asp-for="StreetName" class="form-control"  placeholder="Enter street name here.."/>
                 <span asp-validation-for="StreetName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="StreetNumber" class="control-label"></label>
-                <input asp-for="StreetNumber" class="form-control"/>
+            <div class="form-group mb-3">
+                <label asp-for="StreetNumber" class="control-label"> Street number</label>
+                <input asp-for="StreetNumber" class="form-control"  placeholder="Enter street number here.."/>
                 <span asp-validation-for="StreetNumber" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="TownName" class="control-label"></label>
-                <input asp-for="TownName" class="form-control"/>
+            <div class="form-group mb-3">
+                <label asp-for="TownName" class="control-label"> Town name</label>
+                <input asp-for="TownName" class="form-control"  placeholder="Enter town name here.."/>
                 <span asp-validation-for="TownName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Country" class="control-label"></label>
-                <input asp-for="Country" class="form-control"/>
+            <div class="form-group mb-3">
+                <label asp-for="Country" class="control-label">Country</label>
+                <input asp-for="Country" class="form-control"  placeholder="Enter country name here.."/>
                 <span asp-validation-for="Country" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label asp-for="LogoUrl" class="control-label">Logo url</label>
-                <input asp-for="LogoUrl" class="form-control"/>
+                <input asp-for="LogoUrl" class="form-control"  placeholder="URL.."/>
                 <span asp-validation-for="LogoUrl" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <div class="mt-3">
                     <input type="submit" value="Create" class="btn btn-primary"/>
                 </div>

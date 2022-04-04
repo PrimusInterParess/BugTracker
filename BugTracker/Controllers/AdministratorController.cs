@@ -21,6 +21,15 @@
         [Authorize]
         public IActionResult Register()
         {
+            var userId = this.User.GetId();
+
+            var alreadyExists = _service.AlreadyExists(userId);
+
+            if (alreadyExists)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             return View();
         }
 

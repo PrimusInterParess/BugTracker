@@ -15,15 +15,15 @@ namespace BugTracker.Core.Services
             this._repo = repo;
         }
 
-        public string GetAdminId(ClaimsPrincipal user)
+        public string? GetAdminId(string userId)
         {
-            var userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
+           var admin = this._repo
+                .Administrators.
+                Where(a => a.UserId == userId).
+                Select(a=>a.Id)
+                .FirstOrDefault();
 
-            var admin = this._repo
-                .Administrators
-                .FirstOrDefault(a => a.UserId == userId);
-
-            return admin.Id;
+            return admin;
         }
 
         public string GetUserId(ClaimsPrincipal user)

@@ -1,4 +1,5 @@
-﻿using BugTracker.Models.ServiceModels.Organization;
+﻿using BugTracker.Infrastructure;
+using BugTracker.Models.ServiceModels.Organization;
 
 namespace BugTracker.Controllers
 {
@@ -37,7 +38,7 @@ namespace BugTracker.Controllers
         {
             var result = this._service.ValidateOrganization(organization);
 
-            var adminId = this._userService.GetAdminId(this.User);
+            var adminId = this._userService.GetAdminId(null);
 
             var isSuccessfully = string.Empty;
 
@@ -86,12 +87,13 @@ namespace BugTracker.Controllers
             return View();
         }
 
-
-
+        
         [Authorize]
         public IActionResult MyOrganization()
         {
-            var adminId = this._userService.GetAdminId(this.User);
+            var userId = this.User.GetId();
+
+            var adminId = this._userService.GetAdminId(userId);
 
             var organization = _service.GetOrganizationByAdminId(adminId);
 

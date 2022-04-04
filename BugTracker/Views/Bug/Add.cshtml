@@ -10,17 +10,17 @@
             <h2 class="heading-margin text-center">Add Bug</h2>
             <form asp-action="Add">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
+                <div class="mb-3">
                     <label asp-for="Title" class="control-label"></label>
                     <input asp-for="Title" class="form-control" placeholder="Enter title here" />
                     <span asp-validation-for="Title" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="Description" row="" class="control-label"></label>
+                <div class=" mb-3">
+                    <label asp-for="Description"  class="control-label"></label>
                     <textarea asp-for="Description" class="form-control" placeholder="Enter description here"></textarea>
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
-                <div class="form-group">
+                <div class=" mb-3">
                     <label asp-for="StatusId"></label>
                     <select asp-for="StatusId" class="form-control">
                         <option value="none">none</option>
@@ -31,7 +31,7 @@
                     </select>
                     <span asp-validation-for="StatusId" class="text-danger"></span>
                 </div>
-                <div class="form-group">
+                <div class=" mb-3">
                     <label asp-for="PriorityId"></label>
                     <select asp-for="PriorityId" class="form-control">
                         <option value="none">none</option>
@@ -42,17 +42,17 @@
                     </select>
                     <span asp-validation-for="PriorityId" class="text-danger"></span>
                 </div>
-                <div class="form-group">
+                <div class=" mb-3">
                     <label asp-for="AppearedOn" class="control-label"></label>
                     <input asp-for="AppearedOn" class="form-control" asp-format="{0:dd-MM-YYYYHH:mm}" />
                     <span asp-validation-for="AppearedOn" class="text-danger"></span>
                 </div>
-                <div class="form-group">
+                <div class=" mb-3">
                     <label asp-for="DueDate" class="control-label"></label>
                     <input asp-for="DueDate" class="form-control" asp-format="{0:dd-MM-YYYYHH:mm}" />
                     <span asp-validation-for="DueDate" class="text-danger"></span>
                 </div>
-                <div class="form-group">
+                <div class="mb-3">
                     <label asp-for="Project" class="control-label"></label>
                     <input asp-for="Project" class="form-control" placeholder="Enter project name here.." />
                     <span asp-validation-for="Project" class="text-danger"></span>

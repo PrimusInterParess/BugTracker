@@ -20,6 +20,8 @@ public class BugController : Controller
     [Authorize]
     public IActionResult Add()
     {
+
+
         return View(new AddBugFormModel()
         {
             Priorities = this._service.GetPriorities(),

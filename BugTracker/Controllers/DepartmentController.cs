@@ -1,4 +1,5 @@
-﻿using BugTracker.Models.ServiceModels.Department;
+﻿using BugTracker.Infrastructure;
+using BugTracker.Models.ServiceModels.Department;
 using BugTracker.Models.ViewModels.Organization;
 
 namespace BugTracker.Controllers
@@ -10,7 +11,7 @@ namespace BugTracker.Controllers
 
     public class DepartmentController : Controller
     {
-        private readonly IDepartmentService _departmentService; 
+        private readonly IDepartmentService _departmentService;
         private readonly IOrganizationService _organizationService;
         private readonly IUserService _userService;
 
@@ -19,7 +20,6 @@ namespace BugTracker.Controllers
             this._departmentService = departmentService;
             this._organizationService = organizationService;
             this._userService = userService;
-         
         }
 
         [Authorize]
@@ -53,27 +53,25 @@ namespace BugTracker.Controllers
 
             var save = this._departmentService.Save(department);
 
-            if (save==false)
+            if (save == false)
             {
-               return View(department);
+                return View(department);
             }
 
             return RedirectToAction("Index", "Home");
-
         }
 
-      [Authorize]
+        [Authorize]
         public IActionResult All()
         {
-            var organizationIdd = this.GetOrganizationId();
+            var organizationId = this.GetOrganizationId();
 
             var departmentsList =
 
-                this._departmentService.GetAllDepartments(organizationIdd);
+                this._departmentService.GetAllDepartments(organizationId);
 
             return View(departmentsList);
         }
-
 
         public IActionResult Department(string departmentId)
         {
@@ -81,9 +79,12 @@ namespace BugTracker.Controllers
 
             return View(department);
         }
+
         private string GetOrganizationId()
         {
-            var organizationModel = this._organizationService.GetOrganizationByAdminId(_userService.GetAdminId(this.User));
+            var userId = this.User.GetId();
+
+            var organizationModel = this._organizationService.GetOrganizationByAdminId(_userService.GetAdminId(userId));
             return organizationModel.Id;
         }
     }
