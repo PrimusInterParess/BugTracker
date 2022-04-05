@@ -1,77 +1,82 @@
-﻿using BugTracker.Infrastructure;
-using BugTracker.Models.ServiceModels.Organization;
-
-namespace BugTracker.Controllers
+﻿namespace BugTracker.Controllers
 {
-    using BugTracker.Infrastructure.Data.Models;
     using Microsoft.AspNetCore.Authorization;
-    using Core.Contracts;
     using Models.ViewModels.Organization;
     using Microsoft.AspNetCore.Mvc;
+    using Models.ServiceModels.Organization;
+    using BugTracker.Infrastructure.Data.Models;
+    using Core.Contracts;
+    using Infrastructure;
+    using static Models.Constants.MessageConstants;
 
     public class OrganizationController : Controller
     {
         private readonly IOrganizationService _service;
-        private readonly IValidationService _ValidationService;
         private readonly IUserService _userService;
-
+      
         public OrganizationController(
             IOrganizationService service,
-            IValidationService validationService,
-            IUserService userService)
+             IUserService userService)
         {
-            this._ValidationService = validationService;
-            this._service = service;
-            this._userService = userService;
-
+            _service = service;
+            _userService = userService;
         }
 
         [Authorize]
         public IActionResult Add()
         {
-            return View();
+
+            if (IsAdmin())
+            {
+                return View();
+            }
+
+            return RedirectToAction("Register", "Administrator");
+
         }
 
         [Authorize]
         [HttpPost]
         public IActionResult Add(AddOrganizationFormModel organization)
         {
-            var result = this._service.ValidateOrganization(organization);
+            var userId = User.GetId();
 
-            var adminId = this._userService.GetAdminId(null);
 
-            var isSuccessfully = string.Empty;
-
-            if (result.Count > 0)
+            if (!IsAdmin())
             {
-                foreach (var kvp in result)
-                {
-                    ModelState.AddModelError(kvp.Key, kvp.Value);
-                }
+                return RedirectToAction("Register", "Administrator");
+
             }
+
+            var alreadyExists = this._service.CheckIfOrganizationExistsByName(organization.Name);
+
+            if (alreadyExists)
+            {
+                ModelState.AddModelError(String.Empty, InvalidData);
+            }
+
 
             if (ModelState.IsValid == false)
             {
                 return View(organization);
             }
-            else
+
+            var organizationId = this._service.Save(organization, userId);
+
+            if (organizationId == null)
             {
-                isSuccessfully = this._service.Save(organization, adminId);
+                ModelState.AddModelError(String.Empty, InvalidAttempt);
 
-                if (isSuccessfully == null)
-                {
-                    ModelState.AddModelError("Invalid", "operation");
-
-                    return View(organization);
-                }
-
-                return RedirectToAction("MyOrganization", nameof(Organization));
+                return View(organization);
             }
+
+            return RedirectToAction("MyOrganization", nameof(Organization));
+
 
 
         }
 
-       [Authorize]
+        [Authorize]
         public IActionResult Edit(string organizationId)
         {
             var organization = _service.GetOrganizationById(organizationId);
@@ -81,23 +86,36 @@ namespace BugTracker.Controllers
 
         [Authorize]
         [HttpPost]
-      public IActionResult Edit(OrganizationServiceEditModel organization)
+        public IActionResult Edit(OrganizationServiceEditModel organization)
         {
-            
+
             return View();
         }
 
-        
+
         [Authorize]
         public IActionResult MyOrganization()
         {
-            var userId = this.User.GetId();
 
-            var adminId = this._userService.GetAdminId(userId);
+            if (!IsAdmin())
+            {
+                return RedirectToAction("Register", "Administrator");
+            }
 
-            var organization = _service.GetOrganizationByAdminId(adminId);
+            var userId = User.GetId();
+
+            var organization = _service.GetOrganizationByUserId(userId);
 
             return View(organization);
         }
-    }
+
+        private bool IsAdmin()
+        {
+            var userId = User.GetId();
+            
+            return _userService.IsUserAdministrator(userId);
+
+        }
+}
+
 }

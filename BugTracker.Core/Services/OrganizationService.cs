@@ -1,18 +1,14 @@
-﻿using BugTracker.Models.ServiceModels;
-using BugTracker.Models.ServiceModels.Department;
-using BugTracker.Models.ServiceModels.Organization;
-using BugTracker.Models.ViewModels.Organization;
-using Microsoft.EntityFrameworkCore;
+﻿using BugTracker.Infrastructure.Models;
 
 namespace BugTracker.Core.Services
 {
-    using System.Security.Claims;
-    using Infrastructure.Data;
     using BugTracker.Infrastructure.Data.Models;
+    using BugTracker.Models.ServiceModels.Department;
+    using BugTracker.Models.ServiceModels.Organization;
     using Contracts;
+    using Infrastructure.Data;
+    using Microsoft.EntityFrameworkCore;
     using Models.ViewModels.Organization;
-
-    using static Models.Constants.MessageConstants;
 
     public class OrganizationService : IOrganizationService
     {
@@ -23,24 +19,16 @@ namespace BugTracker.Core.Services
             this._repo = repo;
         }
 
-        public Dictionary<string, string> ValidateOrganization(AddOrganizationFormModel organization)
-        {
-            var organizations =
-                _repo.Organizations.FirstOrDefault(o => o.Name == organization.Name);
+        public bool CheckIfOrganizationExistsByName(string organizationName)
+        => _repo
+            .Organizations
+            .Any(o => o.Name == organizationName);
 
-            var result = new Dictionary<string, string>();
-
-            if (organizations !=null)
-            {
-                result.Add(nameof(organization.Name), InvalidOrganizationName);
-            }
-
-            return result;
-        }
 
         public OrganizationServiceEditModel GetOrganizationById(string organizationId)
-        {
-            var organization = _repo.Organizations.Where(o => o.Id == organizationId).Select(o =>
+        => _repo.Organizations
+            .Where(o => o.Id == organizationId)
+            .Select(o =>
                 new OrganizationServiceEditModel()
                 {
                     Id = o.Id,
@@ -53,15 +41,19 @@ namespace BugTracker.Core.Services
 
                 }).FirstOrDefault();
 
-            return organization;
-        }
+        public string GetOrganizationIdByUserId(string userId)
+            => this._repo
+                .Organizations
+                .Include(o => o.Administrator)
+                .Where(o=>o.Administrator.UserId==userId)
+                .Select(o => o.Id)
+                .FirstOrDefault();
 
-        public OrganizationVIewModel GetOrganizationByAdminId(string adminId)
-        {
-            var organization = _repo.Organizations
-                .Include(o=>o.Departments)
-                .Where(o => o.AdministratiorId == adminId).Select(o =>
-                new OrganizationVIewModel()
+        public OrganizationServiceModel GetOrganizationByUserId(string userId)
+        => _repo.Organizations
+                .Include(o => o.Departments)
+                .Where(o => o.Administrator.UserId == userId).Select(o =>
+                new OrganizationServiceModel()
                 {
                     Id = o.Id,
                     Name = o.Name,
@@ -78,8 +70,6 @@ namespace BugTracker.Core.Services
                     }).ToList()
                 }).FirstOrDefault();
 
-            return organization;
-        }
 
         public string Save(AddOrganizationFormModel organization, string userId)
         {
@@ -109,8 +99,6 @@ namespace BugTracker.Core.Services
 
             return organizationId;
         }
-
-       
 
     }
 }

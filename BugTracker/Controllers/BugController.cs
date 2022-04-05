@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
-
-namespace BugTracker.Controllers;
+﻿namespace BugTracker.Controllers;
 
 using Core.Contracts;
-using Models.ViewModels.Bug;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Models.ViewModels.Bug;
+
 
 public class BugController : Controller
 {

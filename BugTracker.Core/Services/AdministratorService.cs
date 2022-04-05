@@ -14,10 +14,7 @@ namespace BugTracker.Core.Services
         {
             _repo = repo;
         }
-        public bool AlreadyExists(string adminId)
-            => 
-                this._repo.Administrators.Any(a => a.UserId== adminId);
-
+       
         public bool Register(RegisterAdminFormModel admin,string userId)
         {
             var administratorData = new Administrator()

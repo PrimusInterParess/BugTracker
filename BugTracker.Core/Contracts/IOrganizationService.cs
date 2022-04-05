@@ -9,11 +9,13 @@ using Models.ViewModels.Organization;
 
 public interface IOrganizationService
 {
-    Dictionary<string, string> ValidateOrganization(AddOrganizationFormModel organization);
+   bool CheckIfOrganizationExistsByName(string organizationName);
 
-    string Save(AddOrganizationFormModel organization,string UserId);
+    string Save(AddOrganizationFormModel organization,string userId);
 
-    OrganizationVIewModel GetOrganizationByAdminId(string adminId);
+    OrganizationServiceModel GetOrganizationByUserId(string userId);
 
     OrganizationServiceEditModel GetOrganizationById(string organizationId);
+
+    string GetOrganizationIdByUserId(string userId);
 }

@@ -1,49 +1,67 @@
-﻿using BugTracker.Infrastructure;
-using BugTracker.Models.ServiceModels.Department;
-using BugTracker.Models.ViewModels.Organization;
-
-namespace BugTracker.Controllers
+﻿namespace BugTracker.Controllers
 {
     using Core.Contracts;
     using Models.ViewModels.Department;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Authorization;
+    using Infrastructure;
+    using Models.ServiceModels.Department;
+    using Models.ViewModels.Organization;
+
+    using static Models.Constants.MessageConstants;
 
     public class DepartmentController : Controller
     {
         private readonly IDepartmentService _departmentService;
         private readonly IOrganizationService _organizationService;
         private readonly IUserService _userService;
+     
 
-        public DepartmentController(IDepartmentService departmentService, IUserService userService, IOrganizationService organizationService)
+        public DepartmentController(
+            IDepartmentService departmentService,
+            IUserService userService,
+            IOrganizationService organizationService)
         {
-            this._departmentService = departmentService;
-            this._organizationService = organizationService;
-            this._userService = userService;
+            _departmentService = departmentService;
+            _organizationService = organizationService;
+            _userService = userService;
+           
         }
+
 
         [Authorize]
         public IActionResult Add()
         {
-            return View();
+            var userId = User.GetId();
+
+            if (_userService.IsUserAdministrator(userId))
+            {
+                return View();
+            }
+
+            return RedirectToAction("Register", "Administrator");
+
         }
 
         [HttpPost]
         [Authorize]
         public IActionResult Add(AddDepartmentFormModel department)
         {
-            var organizationId = GetOrganizationId();
+            var userId = User.GetId();
+            var organizationId = GetOrganizationId(userId);
+
+            if (!_userService.IsUserAdministrator(userId))
+            {
+                return RedirectToAction("Register", "Administrator");
+            }
 
             department.OrganizationId = organizationId;
 
-            var result = this._departmentService.ValidateDepartment(department);
+            var alreadyExists = this._departmentService.ValidateDepartmentName(department.Name, organizationId);
 
-            if (result.Count > 0)
+            if (alreadyExists)
             {
-                foreach (var kvp in result)
-                {
-                    ModelState.AddModelError(kvp.Key, kvp.Value);
-                }
+                ModelState.AddModelError(String.Empty, InvalidData);
             }
 
             if (ModelState.IsValid == false)
@@ -64,7 +82,9 @@ namespace BugTracker.Controllers
         [Authorize]
         public IActionResult All()
         {
-            var organizationId = this.GetOrganizationId();
+            var userId = User.GetId();
+
+            var organizationId = this.GetOrganizationId(userId);
 
             var departmentsList =
 
@@ -80,12 +100,18 @@ namespace BugTracker.Controllers
             return View(department);
         }
 
-        private string GetOrganizationId()
+        private string? GetOrganizationId(string userId)
         {
-            var userId = this.User.GetId();
 
-            var organizationModel = this._organizationService.GetOrganizationByAdminId(_userService.GetAdminId(userId));
-            return organizationModel.Id;
+           if (_userService.IsUserAdministrator(userId))
+            {
+                return _organizationService.GetOrganizationIdByUserId(userId);
+            }
+
+            return null;
         }
+
+
     }
+
 }

@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BugTracker.Core.Contracts
+﻿namespace BugTracker.Core.Contracts
 {
     public interface IUserService
     {
-        string? GetAdminId(string user);
-       
+        bool IsUserAdministrator(string user);
+
     }
 }

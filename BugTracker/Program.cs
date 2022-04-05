@@ -13,13 +13,13 @@ builder.Services.AddDbContext<BugTrackerDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services
-    .AddScoped<IRepository, DbRepository>()
-    .AddScoped<IBugService, BugService>()
-    .AddScoped<IValidationService, ValidationService>()
-    .AddScoped<IOrganizationService,OrganizationService>()
-    .AddScoped<IDepartmentService,DepartmentService>()
-    .AddScoped<IAdministratorService,AdministratorService>()
-    .AddScoped<IUserService,UserService>();
+    .AddTransient<IRepository, DbRepository>()
+    .AddTransient<IBugService, BugService>()
+    .AddTransient<IValidationService, ValidationService>()
+    .AddTransient<IOrganizationService, OrganizationService>()
+    .AddTransient<IDepartmentService, DepartmentService>()
+    .AddTransient<IAdministratorService, AdministratorService>()
+    .AddTransient<IUserService, UserService>();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
     {

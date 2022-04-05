@@ -22,9 +22,9 @@ public class EmployeeController : Controller
     {
         var userId = this.User.GetId();
 
-        var adminId = this._userService.GetAdminId(userId);
+        var adminId = this._userService.IsUserAdministrator(userId);
 
-        if (adminId == null)
+        if (adminId)
         {
            
             return RedirectToAction("Register","Administrator");

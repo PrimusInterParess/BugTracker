@@ -1,26 +1,39 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using BugTracker.Core.Contracts
+@using BugTracker.Core.Services
 @using Microsoft.Extensions.Options
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
+@inject IUserService userService
 
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
-    {@*
+    {
+
+        var userId = User.GetId();
+
+        var isAdmin = userService.IsUserAdministrator(userId);
+
+
         <li>
             <div class="dropdown">
                 <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     Options
                 </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">*@
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Administrator" asp-action="Register">Register as administrator</a>
-                    </li>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    @if (isAdmin == false)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Administrator" asp-action="Register">Register as administrator</a>
+                        </li>
+                    }
+
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Account settings</a>
                     </li>
-       @*         </ul>
+                </ul>
             </div>
-        </li>*@
+        </li>
 
         <li class="nav-item">
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">

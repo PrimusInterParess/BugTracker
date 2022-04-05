@@ -12,7 +12,7 @@
 
         public const string DefaultNumbersLengthErrorMessage = "{0} must be between {2} and {1} characters";
 
-        public const string InvalidOrganizationName = "Invalid organization name";
+        public const string InvalidData = "Invalid data";
 
         public const string InvalidDepartmentName = "Invalid department name";
 

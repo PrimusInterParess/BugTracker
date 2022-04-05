@@ -10,7 +10,7 @@ namespace BugTracker.Core.Contracts
 {
     public interface IDepartmentService
     {
-        Dictionary<string, string> ValidateDepartment(AddDepartmentFormModel department);
+        bool ValidateDepartmentName(string departmentName,string organizationId);
 
         bool Save(AddDepartmentFormModel department);
        List<DepartmentServiceModel> GetAllDepartments(string organizationId);
