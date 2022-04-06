@@ -1,4 +1,6 @@
 ﻿using BugTracker.Infrastructure.Models;
+using BugTracker.Models.ServiceModels.Employee;
+using BugTracker.Models.ServiceModels.Project;
 
 namespace BugTracker.Core.Services
 {
@@ -19,71 +21,35 @@ namespace BugTracker.Core.Services
             this._repo = repo;
         }
 
-        public bool CheckIfOrganizationExistsByName(string organizationName)
+        public bool AlreadyExists(string organizationName, string userId)
         => _repo
             .Organizations
-            .Any(o => o.Name == organizationName);
+            .Any(o =>
+                o.Name == organizationName &&
+                o.Administrator.UserId == userId);
 
 
-        public OrganizationServiceEditModel GetOrganizationById(string organizationId)
-        => _repo.Organizations
-            .Where(o => o.Id == organizationId)
-            .Select(o =>
-                new OrganizationServiceEditModel()
-                {
-                    Id = o.Id,
-                    Country = o.Country,
-                    LogoUrl = o.LogoUrl,
-                    StreetName = o.StreetName,
-                    StreetNumber = o.StreetNumber,
-                    Name = o.Name,
-                    TownName = o.TownName
-
-                }).FirstOrDefault();
-
-        public string GetOrganizationIdByUserId(string userId)
-            => this._repo
-                .Organizations
-                .Include(o => o.Administrator)
-                .Where(o=>o.Administrator.UserId==userId)
-                .Select(o => o.Id)
-                .FirstOrDefault();
-
-        public OrganizationServiceModel GetOrganizationByUserId(string userId)
-        => _repo.Organizations
-                .Include(o => o.Departments)
-                .Where(o => o.Administrator.UserId == userId).Select(o =>
-                new OrganizationServiceModel()
-                {
-                    Id = o.Id,
-                    Name = o.Name,
-                    Country = o.Country,
-                    TownName = o.TownName,
-                    StreetName = o.StreetName,
-                    StreetNumber = o.StreetNumber,
-                    LogoUrl = o.LogoUrl,
-                    Departments = o.Departments.Select(d => new DepartmentServiceModel()
-                    {
-                        Id = d.Id,
-                        Name = d.Name,
-                        DepartmentSubject = d.DepartmentSubject
-                    }).ToList()
-                }).FirstOrDefault();
-
-
-        public string Save(AddOrganizationFormModel organization, string userId)
+        public string Save(
+            string name,
+            string countryName,
+            string townName,
+            string streetName,
+            string streetNumber,
+            string logoUrl,
+            string userId)
         {
+            var getAdminId = GetAdminId(userId);
             var organizationId = string.Empty;
 
             Organization organizationData = new Organization()
             {
-                Name = organization.Name,
-                Country = organization.Country,
-                StreetName = organization.StreetName,
-                StreetNumber = organization.StreetNumber,
-                TownName = organization.TownName,
-                AdministratiorId = userId,
-                LogoUrl = organization.LogoUrl
+                Name = name,
+                Country = countryName,
+                StreetName = streetName,
+                StreetNumber = streetNumber,
+                TownName = townName,
+                AdministratiorId = getAdminId,
+                LogoUrl = logoUrl
             };
 
             try
@@ -100,5 +66,78 @@ namespace BugTracker.Core.Services
             return organizationId;
         }
 
+        public OrganizationServiceModel GetOrganizationByUserId(string userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public OrganizationServiceModel GetOrganizationById(string organizationId)
+            => this._repo.Organizations.Where(o => o.Id == organizationId).Select(o => new OrganizationServiceModel()
+            {
+                Id = o.Id,
+                Name = o.Name,
+                Country = o.Country,
+                TownName = o.TownName,
+                LogoUrl = o.LogoUrl,
+                Departments = o.Departments.Select(d => new DepartmentServiceModel()
+                {
+                    Id = d.Id,
+                    Name = d.Name
+                }).ToList(),
+                Employees = o.OrganizationEmployees.Select(e => new EmployeeServiceModel()
+                {
+                    Id = e.Id,
+                    Name = e.Name
+                }).ToList(),
+                Projects = o.OrganizationProjects.Select(p => new ProjectServiceModel()
+                {
+                    Id = p.Id,
+                    Name = p.Name
+                }).ToList()
+
+            }).FirstOrDefault();
+
+        //public OrganizationFormModel GetOrganizationById(string organizationId)
+        //    => this._repo.Organizations.Where(o => o.Id == organizationId).Select(o => new);
+
+        public string GetOrganizationIdByUserId(string userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<OrganizationServiceModel> GetAllOrganizationsByUser(string userId)
+            => this._repo.Organizations.Where(o => o.Administrator.UserId == userId).Select(o =>
+                new OrganizationServiceModel()
+                {
+                    Id = o.Id,
+                    Name = o.Name,
+                    Country = o.Country,
+                    TownName = o.TownName,
+                    LogoUrl = o.LogoUrl,
+                    Departments = o.Departments.Select(d => new DepartmentServiceModel()
+                    {
+                        Id = d.Id,
+                        Name = d.Name
+                    }).ToList(),
+                    Employees = o.OrganizationEmployees.Select(e => new EmployeeServiceModel()
+                    {
+                        Id = e.Id,
+                        Name = e.Name
+                    }).ToList(),
+                    Projects = o.OrganizationProjects.Select(p => new ProjectServiceModel()
+                    {
+                        Id = p.Id,
+                        Name = p.Name
+                    }).ToList()
+
+                }).ToList();
+
+        private string GetAdminId(string userId)
+       => this
+           ._repo
+           .Administrators
+           .Where(a => a.UserId == userId)
+           .Select(a => a.Id)
+           .FirstOrDefault();
     }
 }

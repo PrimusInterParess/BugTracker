@@ -21,6 +21,10 @@
 
         public DateTime DueDate { get; set; }
 
+        public string OrganizationId { get; set; }
+
+        public Organization Organization { get; set; }
+
         public string DepartmentId { get; set; }
 
         [ForeignKey(nameof(DepartmentId))]

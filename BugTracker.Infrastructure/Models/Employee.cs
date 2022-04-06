@@ -20,6 +20,10 @@ namespace BugTracker.Infrastructure.Data.Models
         [StringLength(EmailNameMaxLength)]
         public string Email { get; set; }
 
+        public string OrganizationId { get; set; }
+
+        public Organization Organization { get; set; }
+
         public string DepartmentId { get; set; }
 
         [ForeignKey(nameof(DepartmentId))]

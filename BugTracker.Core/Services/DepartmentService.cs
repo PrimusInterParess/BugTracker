@@ -88,17 +88,17 @@
                     .Where(o => o.Id == organizationId)
                     .SelectMany(o => o.Departments);
 
-            var resutl =
-                departments
-                    .Select(d =>
-                        new DepartmentServiceModel()
-                        {
-                            Id = d.Id,
-                            Name = d.Name,
-                            DepartmentSubject = d.DepartmentSubject
-                        }).ToList();
+            //var resutl =
+            //    departments
+            //        .Select(d =>
+            //            new DepartmentServiceModel()
+            //            {
+            //                Id = d.Id,
+            //                Name = d.Name,
+            //                DepartmentSubject = d.DepartmentSubject
+            //            }).ToList();
 
-            return resutl;
+            return new List<DepartmentServiceModel>();
         }
 
 

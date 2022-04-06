@@ -25,5 +25,10 @@ namespace BugTracker.Controllers
             return RedirectToAction("Index", "Home");
 
         }
+
+        public IActionResult All(string organizationId)
+        {
+            return View();
+        }
     }
 }

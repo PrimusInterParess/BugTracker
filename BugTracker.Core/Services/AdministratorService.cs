@@ -6,7 +6,7 @@ namespace BugTracker.Core.Services
     using BugTracker.Core.Contracts;
     using BugTracker.Infrastructure.Data;
 
-    public class AdministratorService:IAdministratorService
+    public class AdministratorService : IAdministratorService
     {
         private readonly BugTrackerDbContext _repo;
 
@@ -14,8 +14,8 @@ namespace BugTracker.Core.Services
         {
             _repo = repo;
         }
-       
-        public bool Register(RegisterAdminFormModel admin,string userId)
+
+        public bool Register(RegisterAdminFormModel admin, string userId)
         {
             var administratorData = new Administrator()
             {
@@ -39,5 +39,10 @@ namespace BugTracker.Core.Services
             }
 
         }
+
+        public bool HasOrganizationId(string organizationId, string userId)
+            => this._repo.Administrators.Any(
+                a => a.UserId == userId && 
+                     a.Organizations.Any(o => o.Id == organizationId));
     }
 }

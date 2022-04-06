@@ -6,9 +6,9 @@
     using static Constants.MessageConstants;
 
 
-    public class AddOrganizationFormModel
+    public class OrganizationFormModel
     {
-        [Required]
+       [Required]
         [StringLength(DefaultMaxLength, MinimumLength = DefaultMinLength,
             ErrorMessage = DefaultStringLengthErrorMessage)]
         public string Name { get; init; }
@@ -17,7 +17,7 @@
 
         [StringLength(DefaultMaxLength,
             ErrorMessage = DefaultStringLengthErrorMessage)]
-        public string StreetNumber { get; set; }
+        public string? StreetNumber { get; set; }
 
         [StringLength(DefaultMaxLength, MinimumLength = DefaultMinLength,
             ErrorMessage = DefaultStringLengthErrorMessage)]

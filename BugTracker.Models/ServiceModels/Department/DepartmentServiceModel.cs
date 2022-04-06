@@ -8,10 +8,9 @@ namespace BugTracker.Models.ServiceModels.Department
 {
     public class DepartmentServiceModel
     {
-        public string Id { get; init; } 
+        public string Id { get; init; }
 
         public string Name { get; init; }
 
-        public string DepartmentSubject { get; init; }
     }
 }

@@ -80,17 +80,10 @@
         }
 
         [Authorize]
-        public IActionResult All()
+        public IActionResult All(string organizationId)
         {
-            var userId = User.GetId();
 
-            var organizationId = this.GetOrganizationId(userId);
-
-            var departmentsList =
-
-                this._departmentService.GetAllDepartments(organizationId);
-
-            return View(departmentsList);
+            return View();
         }
 
         public IActionResult Department(string departmentId)

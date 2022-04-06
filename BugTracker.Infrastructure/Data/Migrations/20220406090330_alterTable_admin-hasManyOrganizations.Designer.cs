@@ -4,6 +4,7 @@ using BugTracker.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BugTracker.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(BugTrackerDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220406090330_alterTable_admin-hasManyOrganizations")]
+    partial class alterTable_adminhasManyOrganizations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -125,15 +127,9 @@ namespace BugTracker.Infrastructure.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("OrganizationId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
-
-                    b.HasIndex("OrganizationId");
 
                     b.ToTable("Employees");
                 });
@@ -199,22 +195,22 @@ namespace BugTracker.Infrastructure.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "d4cc6aa3-3e52-4a42-b7b4-a81190aa678c",
+                            Id = "01d956a9-29b2-4efe-a33c-5e0085bde2b0",
                             Name = "low"
                         },
                         new
                         {
-                            Id = "530eb59b-ae78-40ba-aa57-fb35231566fd",
+                            Id = "b973598d-d793-4bbb-8f99-04019267cc35",
                             Name = "normal"
                         },
                         new
                         {
-                            Id = "293ddb24-106c-474d-be0f-7b7897da230c",
+                            Id = "8220e6d4-8c4f-4cc5-aa7e-f045fcf26b2c",
                             Name = "urgent"
                         },
                         new
                         {
-                            Id = "6f0d0019-cbbe-44bf-8cfe-0ff3db80d798",
+                            Id = "2396890b-47df-4220-898b-65ad1eedaaa2",
                             Name = "emergency"
                         });
                 });
@@ -244,15 +240,9 @@ namespace BugTracker.Infrastructure.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("OrganizationId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
-
-                    b.HasIndex("OrganizationId");
 
                     b.ToTable("Projects");
                 });
@@ -274,27 +264,27 @@ namespace BugTracker.Infrastructure.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "64b19fa5-9839-400e-bfa0-d0f396d0776e",
+                            Id = "c6a2f09c-91d0-4d09-8841-815d60469630",
                             Name = "new"
                         },
                         new
                         {
-                            Id = "478611d0-e2eb-459e-8add-6bbc5108e9de",
+                            Id = "f8c7da41-9234-453e-be3b-c91d4fec2edb",
                             Name = "in progress"
                         },
                         new
                         {
-                            Id = "0bed5549-86ef-44fd-bacf-1835f1e0a844",
+                            Id = "30765cc8-2ee6-46f6-8036-3746e14a2ee0",
                             Name = "on hold"
                         },
                         new
                         {
-                            Id = "569e8b0c-e61a-4bc9-a330-28419e854589",
+                            Id = "10e4123e-1f2c-45e3-9eef-01d7e04e98e7",
                             Name = "solved"
                         },
                         new
                         {
-                            Id = "990bbf62-4848-40be-b935-c4f6092c2de6",
+                            Id = "1b9bbcb8-6ceb-4fb6-92e7-9ef7d860e33a",
                             Name = "closed"
                         });
                 });
@@ -642,15 +632,7 @@ namespace BugTracker.Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("BugTracker.Infrastructure.Data.Models.Organization", "Organization")
-                        .WithMany("OrganizationEmployees")
-                        .HasForeignKey("OrganizationId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("Department");
-
-                    b.Navigation("Organization");
                 });
 
             modelBuilder.Entity("BugTracker.Infrastructure.Data.Models.Organization", b =>
@@ -672,15 +654,7 @@ namespace BugTracker.Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("BugTracker.Infrastructure.Data.Models.Organization", "Organization")
-                        .WithMany("OrganizationProjects")
-                        .HasForeignKey("OrganizationId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("Department");
-
-                    b.Navigation("Organization");
                 });
 
             modelBuilder.Entity("BugTracker.Infrastructure.Models.Administrator", b =>
@@ -797,10 +771,6 @@ namespace BugTracker.Infrastructure.Data.Migrations
             modelBuilder.Entity("BugTracker.Infrastructure.Data.Models.Organization", b =>
                 {
                     b.Navigation("Departments");
-
-                    b.Navigation("OrganizationEmployees");
-
-                    b.Navigation("OrganizationProjects");
                 });
 
             modelBuilder.Entity("BugTracker.Infrastructure.Data.Models.Priority", b =>

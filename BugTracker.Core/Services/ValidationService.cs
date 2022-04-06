@@ -7,6 +7,14 @@
 
     public class ValidationService : IValidationService
     {
+        private readonly BugTrackerDbContext _repo;
+
+
+        public ValidationService(
+            BugTrackerDbContext repo)
+        {
+            this._repo = repo;
+        }
         
         public (bool, DateTime) ValidateDate(string model)
         {
@@ -35,6 +43,8 @@
             return true;
         }
 
+        public bool OrganizationName(string organizationName)
+            => this._repo.Organizations.Any(o => o.Name == organizationName);
     }
 
 }

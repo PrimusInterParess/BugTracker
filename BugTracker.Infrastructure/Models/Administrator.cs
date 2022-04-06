@@ -28,9 +28,7 @@
         [StringLength(PhoneNumberMaxLength)]
         public string PhoneNumber { get; set; }
 
-        public string? OrganizationId { get; set; }
-     
-        public Organization? Organization { get; set; }
+        public ICollection<Organization> Organizations { get; set; } = new List<Organization>();
 
         public string UserId { get; set; }
 

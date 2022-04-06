@@ -1,0 +1,18 @@
+﻿@model OrganizationServiceModel
+
+<div class="row text-center mt-5">
+    <div class="card w-100 ">
+        <h4 class="card-header text-center">@Model.Name</h4>
+        <div class="card-body">
+            <b class="card-title text-center">Address</b>
+            <p class="card-text text-center"><b>Country: </b>@Model.Country, @Model.TownName</p>
+            <div class="text-center">
+                <a asp-controller="Department" asp-action="All" asp-route-departmentId="@Model.Id" class="btn btn-secondary col-md-3 col-xl-2 col col-sm-2 mb-1">Departments</a>
+                <a asp-controller="Project" asp-action="All" asp-route-departmentId="@Model.Id" class="btn btn-secondary col-md-3 col-xl-2 col col-sm-2 mb-1">Projects</a>
+                <a asp-controller="Employee" asp-action="All" asp-route-organizationId="@Model.Id" class="btn btn-secondary col-md-3 col-xl-2 col col-sm-2 mb-1">Employees</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+

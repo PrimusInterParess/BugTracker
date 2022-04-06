@@ -38,5 +38,9 @@
         public Administrator Administrator { get; set; }
 
         public ICollection<Department> Departments { get; set; } = new HashSet<Department>();
+
+        public ICollection<Project> OrganizationProjects { get; set; } = new HashSet<Project>();
+
+        public ICollection<Employee> OrganizationEmployees { get; set; } = new HashSet<Employee>();
     }
 }

@@ -9,13 +9,17 @@ using Models.ViewModels.Organization;
 
 public interface IOrganizationService
 {
-   bool CheckIfOrganizationExistsByName(string organizationName);
+   bool AlreadyExists(string organizationName,string userId);
 
-    string Save(AddOrganizationFormModel organization,string userId);
+   string Save(string name, string countryName, string townName, string streetName, string streetNumber,
+       string logoUrl,string userId);
 
     OrganizationServiceModel GetOrganizationByUserId(string userId);
 
-    OrganizationServiceEditModel GetOrganizationById(string organizationId);
+    OrganizationServiceModel GetOrganizationById(string organizationId);
 
     string GetOrganizationIdByUserId(string userId);
+
+    List<OrganizationServiceModel> GetAllOrganizationsByUser(string userId);
 }
+

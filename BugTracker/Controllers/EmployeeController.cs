@@ -42,4 +42,11 @@ public class EmployeeController : Controller
         return View();
     }
 
+
+    [Authorize]
+    public IActionResult All(string organizationId)
+    {
+        return View();
+    }
+
 }

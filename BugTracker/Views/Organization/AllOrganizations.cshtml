@@ -1,0 +1,37 @@
+﻿@model List<OrganizationServiceModel>
+
+    @if (Model.Count == 0)
+{
+    <div class="jumbotron">
+        <h1 class="display-4">The are not organization</h1>
+       <hr class="my-4">
+        <p>If you want to proceed please add one</p>
+        <a asp-controller="Organization" asp-action="Add" class="btn btn-secondary btn-lg" href="#" role="button">Add organization</a>
+    </div>
+}
+else
+{
+   
+    @for (int i = 0; i < Model.Count; i++)
+    {
+        var organizationServiceModel = Model[i];
+
+        <div class="accordion mb-3" id="departments">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading-@i">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#@organizationServiceModel.Name" aria-expanded="false" aria-controls="@organizationServiceModel.Name">
+                        @organizationServiceModel.Name
+                    </button>
+                </h2>
+                <div id="@organizationServiceModel.Name" class="accordion-collapse collapse" aria-labelledby="heading-@i" data-bs-parent="#departments">
+                    <div class="accordion-body">
+                        <a class="btn btn-secondary" asp-area="" asp-controller="Organization" asp-route-organizationId="@organizationServiceModel.Id" asp-action="Information">Information</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+}
+
+
