@@ -16,22 +16,24 @@ else
     {
         var organizationServiceModel = Model[i];
 
-        <div class="accordion mb-3" id="departments">
+        <div class="accordion mb-3" >
             <div class="accordion-item">
-                <h2 class="accordion-header" id="heading-@i">
+                <h2 class="accordion-header">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#@organizationServiceModel.Name" aria-expanded="false" aria-controls="@organizationServiceModel.Name">
                         @organizationServiceModel.Name
                     </button>
                 </h2>
-                <div id="@organizationServiceModel.Name" class="accordion-collapse collapse" aria-labelledby="heading-@i" data-bs-parent="#departments">
+                <div id="@organizationServiceModel.Name" class="accordion-collapse collapse"  data-bs-parent="#organizations">
                     <div class="accordion-body">
                         <a class="btn btn-secondary" asp-area="" asp-controller="Organization" asp-route-organizationId="@organizationServiceModel.Id" asp-action="Information">Information</a>
                     </div>
                 </div>
             </div>
         </div>
-
-    }
+        
+        }
 }
+
+
 
 
