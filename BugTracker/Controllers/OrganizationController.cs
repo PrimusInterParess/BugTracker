@@ -1,15 +1,13 @@
-﻿using System.ComponentModel;
-using BugTracker.Infrastructure.Models;
-
-namespace BugTracker.Controllers
+﻿namespace BugTracker.Controllers
 {
-    using Microsoft.AspNetCore.Authorization;
-    using Models.ViewModels.Organization;
-    using Microsoft.AspNetCore.Mvc;
-    using Models.ServiceModels.Organization;
     using BugTracker.Infrastructure.Data.Models;
+    using BugTracker.Infrastructure.Models;
     using Core.Contracts;
     using Infrastructure;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+    using Models.ViewModels.Organization;
+    using System.ComponentModel;
     using static Models.Constants.MessageConstants;
 
     public class OrganizationController : Controller
@@ -35,7 +33,7 @@ namespace BugTracker.Controllers
         {
             var userId = User.GetId();
 
-            if (IsAdmin(userId))
+            if (_userService.IsUserAdministrator(userId))
             {
                 return View();
             }
@@ -50,7 +48,7 @@ namespace BugTracker.Controllers
         {
             var userId = User.GetId();
 
-            if (!IsAdmin(userId))
+            if (!_userService.IsUserAdministrator(userId))
             {
                 return RedirectToAction(nameof(AdministratorController.Register), "Administrator");
             }
@@ -91,7 +89,7 @@ namespace BugTracker.Controllers
         {
             var userId = User.GetId();
 
-            if (!IsAdmin(userId))
+            if (!_userService.IsUserAdministrator(userId))
             {
                 return RedirectToAction(nameof(AdministratorController.Register), "Administrator");
             }
@@ -106,7 +104,7 @@ namespace BugTracker.Controllers
         {
             var userId = User.GetId();
 
-            if (IsAdmin(userId))
+            if (!_userService.IsUserAdministrator(userId))
             {
                 return RedirectToAction(nameof(AdministratorController.Register), nameof(Administrator));
 
@@ -114,7 +112,15 @@ namespace BugTracker.Controllers
 
             var organization = _organizationService.GetOrganizationById(organizationId);
 
-            return View(organization);
+            return View(new OrganizationFormModel()
+            {
+                Country = organization.Country,
+                LogoUrl = organization.LogoUrl,
+                Name = organization.Name,
+                StreetName = organization.TownName,
+                StreetNumber = organization.StreetNumber,
+                TownName = organization.TownName
+            });
         }
 
         [Authorize]
@@ -131,7 +137,7 @@ namespace BugTracker.Controllers
         {
             var userId = User.GetId();
 
-            if (!IsAdmin(userId))
+            if (!IsAuthorized(userId,organizationId))
             {
                 return RedirectToAction("Register", "Administrator");
             }
@@ -141,8 +147,8 @@ namespace BugTracker.Controllers
             return View(organization);
         }
 
-        private bool IsAdmin(string userId) =>
-       _userService.IsUserAdministrator(userId);
+        private bool IsAuthorized(string userId, string organizationId) =>
+            _userService.IsAdminAuthorized(userId, organizationId);
 
     }
 }

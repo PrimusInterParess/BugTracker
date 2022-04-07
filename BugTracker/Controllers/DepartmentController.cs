@@ -15,7 +15,7 @@
         private readonly IDepartmentService _departmentService;
         private readonly IOrganizationService _organizationService;
         private readonly IUserService _userService;
-     
+
 
         public DepartmentController(
             IDepartmentService departmentService,
@@ -25,30 +25,29 @@
             _departmentService = departmentService;
             _organizationService = organizationService;
             _userService = userService;
-           
+
         }
 
 
         [Authorize]
-        public IActionResult Add()
+        public IActionResult Add(string organizationId)
         {
             var userId = User.GetId();
 
-            if (_userService.IsUserAdministrator(userId))
+            if (!_userService.IsUserAdministrator(userId))
             {
-                return View();
+                return Unauthorized();
             }
 
-            return RedirectToAction("Register", "Administrator");
+            return View();
 
         }
 
         [HttpPost]
         [Authorize]
-        public IActionResult Add(AddDepartmentFormModel department)
+        public IActionResult Add(string organizationId, AddDepartmentFormModel department)
         {
             var userId = User.GetId();
-            var organizationId = GetOrganizationId(userId);
 
             if (!_userService.IsUserAdministrator(userId))
             {
@@ -76,14 +75,23 @@
                 return View(department);
             }
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(DepartmentController.All),"Department",new{organizationId=organizationId});
         }
 
         [Authorize]
         public IActionResult All(string organizationId)
         {
+            var userId = User.GetId();
 
-            return View();
+            if (!_userService.IsAdminAuthorized(userId,organizationId))
+            {
+                return Unauthorized();
+            }
+
+            var departments = _departmentService.GetAllDepartments(organizationId);
+
+
+            return View(departments);
         }
 
         public IActionResult Department(string departmentId)
@@ -96,7 +104,7 @@
         private string? GetOrganizationId(string userId)
         {
 
-           if (_userService.IsUserAdministrator(userId))
+            if (_userService.IsUserAdministrator(userId))
             {
                 return _organizationService.GetOrganizationIdByUserId(userId);
             }

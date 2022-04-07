@@ -5,14 +5,88 @@
         <h4 class="card-header text-center">@Model.Name</h4>
         <div class="card-body">
             <b class="card-title text-center">Address</b>
-            <p class="card-text text-center"><b>Country: </b>@Model.Country, @Model.TownName</p>
-            <div class="text-center">
-                <a asp-controller="Department" asp-action="All" asp-route-departmentId="@Model.Id" class="btn btn-secondary col-md-3 col-xl-2 col col-sm-2 mb-1">Departments</a>
-                <a asp-controller="Project" asp-action="All" asp-route-departmentId="@Model.Id" class="btn btn-secondary col-md-3 col-xl-2 col col-sm-2 mb-1">Projects</a>
-                <a asp-controller="Employee" asp-action="All" asp-route-organizationId="@Model.Id" class="btn btn-secondary col-md-3 col-xl-2 col col-sm-2 mb-1">Employees</a>
+            <p class="card-text"><b>Country: </b>@Model.Country, @Model.TownName</p>
+
+            <div class="mb-2 mt-2">
+                <div class="dropdown">
+                    <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        Add
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li> <a asp-controller="Department" asp-action="Add" asp-route-organizationId="@Model.Id" class="btn btn-secondary col-md-3 col-xl-2 col col-sm-2 mb-1">Department</a></li>
+                        <li><a asp-controller="Project" asp-action="Add" asp-route-organizationId="@Model.Id" class="btn btn-secondary col-md-3 col-xl-2 col col-sm-2 mb-1">Project</a></li>
+                        <li><a asp-controller="Employee" asp-action="Add" asp-route-organizationId="@Model.Id" class="btn btn-secondary col-md-3 col-xl-2 col col-sm-2 mb-1">Employees</a> </li>
+                        <li><a asp-controller="Bug" asp-action="Add" asp-route-organizationId="@Model.Id" class="btn btn-secondary col-md-3 col-xl-2 col col-sm-2 mb-1">Bug</a> </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mb-2 mt-2">
+                <div class="dropdown">
+                    <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        Add
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li> <a asp-controller="Department" asp-action="All" asp-route-organizationId="@Model.Id" class="btn btn-secondary col-md-3 col-xl-2 col col-sm-2 mb-1">Department</a></li>
+                        <li><a asp-controller="Project" asp-action="All" asp-route-organizationId="@Model.Id" class="btn btn-secondary col-md-3 col-xl-2 col col-sm-2 mb-1">Project</a></li>
+                        <li><a asp-controller="Employee" asp-action="All" asp-route-organizationId="@Model.Id" class="btn btn-secondary col-md-3 col-xl-2 col col-sm-2 mb-1">Employees</a> </li>
+                        <li><a asp-controller="Bug" asp-action="All" asp-route-organizationId="@Model.Id" class="btn btn-secondary col-md-3 col-xl-2 col col-sm-2 mb-1">Bug</a> </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+
+    <div class=" mt-2 mb-2">
+      
+    </div>
+    
+
+<div class="card" style="width: 18rem;">
+   <div class="card-body">
+        <h5 class="card-title">@Model.Name</h5>
+        <p class="card-text">Address- Country: @Model.Country, @Model.TownName</p>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div class="mb-2 mt-2">
+                <div class="dropdown">
+                    <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        Add
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li> <a asp-controller="Department" asp-action="Add" asp-route-organizationId="@Model.Id" class="btn btn-secondary col-md-3 col-xl-2 col col-sm-2 mb-1">Department</a></li>
+                        <li><a asp-controller="Project" asp-action="Add" asp-route-organizationId="@Model.Id" class="btn btn-secondary col-md-3 col-xl-2 col col-sm-2 mb-1">Project</a></li>
+                        <li><a asp-controller="Employee" asp-action="Add" asp-route-organizationId="@Model.Id" class="btn btn-secondary col-md-3 col-xl-2 col col-sm-2 mb-1">Employees</a> </li>
+                        <li><a asp-controller="Bug" asp-action="Add" asp-route-organizationId="@Model.Id" class="btn btn-secondary col-md-3 col-xl-2 col col-sm-2 mb-1">Bug</a> </li>
+                    </ul>
+                </div>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div class="mb-2 mt-2">
+                <div class="dropdown">
+                    <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        Add
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li> <a asp-controller="Department" asp-action="All" asp-route-organizationId="@Model.Id" class="btn btn-secondary col-md-3 col-xl-2 col col-sm-2 mb-1">Department</a></li>
+                        <li><a asp-controller="Project" asp-action="All" asp-route-organizationId="@Model.Id" class="btn btn-secondary col-md-3 col-xl-2 col col-sm-2 mb-1">Project</a></li>
+                        <li><a asp-controller="Employee" asp-action="All" asp-route-organizationId="@Model.Id" class="btn btn-secondary col-md-3 col-xl-2 col col-sm-2 mb-1">Employees</a> </li>
+                        <li><a asp-controller="Bug" asp-action="All" asp-route-organizationId="@Model.Id" class="btn btn-secondary col-md-3 col-xl-2 col col-sm-2 mb-1">Bug</a> </li>
+                    </ul>
+                </div>
+            </div>
+        </li>
+        </ul>
+    <div class="card-body">
+        <h6>Number of Departments</h6><b>@Model.Departments.Count</b>
+        <h6>Number of Projects</h6> <b>@Model.Projects.Count</b>
+        <h6>Number of Employees</h6> <b>@Model.Employees.Count</b>
+    </div>
+</div>
+
+
 
 

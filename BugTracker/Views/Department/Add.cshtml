@@ -1,7 +1,7 @@
 ﻿@model BugTracker.Models.ViewModels.Department.AddDepartmentFormModel
 
 @{
-    ViewData["Title"] = "Add";
+    ViewData["Title"] = "Add Department";
 }
 
 
@@ -9,7 +9,7 @@
 <div class="row mt-5">
     <div class="mt-5 offset-sm-2  col-lg-8 col-sm-12 offset-xl-3 col-xl-6">
         <h2 class="heading-margin text-center">Add department</h2>
-        <form asp-action="Add">
+        <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group mb-3">
                 <label asp-for="Name" class="control-label"></label>

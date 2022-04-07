@@ -15,6 +15,9 @@
         public string Country { get; set; }
 
         public string LogoUrl { get; set; }
+        public string StreetName { get; set; }
+        public string StreetNumber { get; set; }
+        
 
         public ICollection<DepartmentServiceModel> Departments { get; set; } = new List<DepartmentServiceModel>();
 

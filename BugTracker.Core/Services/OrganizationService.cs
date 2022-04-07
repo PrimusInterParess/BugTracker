@@ -79,6 +79,8 @@ namespace BugTracker.Core.Services
                 Country = o.Country,
                 TownName = o.TownName,
                 LogoUrl = o.LogoUrl,
+                StreetName = o.StreetName,
+                StreetNumber = o.StreetNumber,
                 Departments = o.Departments.Select(d => new DepartmentServiceModel()
                 {
                     Id = d.Id,

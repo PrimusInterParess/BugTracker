@@ -80,26 +80,18 @@
                     }).FirstOrDefault();
 
         public List<DepartmentServiceModel> GetAllDepartments(string organizationId)
-        {
-            var departments =
-                _repo
+        => _repo
                     .Organizations
                     .Include(o => o.Departments)
                     .Where(o => o.Id == organizationId)
-                    .SelectMany(o => o.Departments);
+                    .SelectMany(o => o.Departments).Select(d=> 
+                       new DepartmentServiceModel()
+                      {
+                         Id = d.Id,
+                          Name = d.Name,
+                           
+                   }).ToList();
 
-            //var resutl =
-            //    departments
-            //        .Select(d =>
-            //            new DepartmentServiceModel()
-            //            {
-            //                Id = d.Id,
-            //                Name = d.Name,
-            //                DepartmentSubject = d.DepartmentSubject
-            //            }).ToList();
-
-            return new List<DepartmentServiceModel>();
-        }
 
 
     }

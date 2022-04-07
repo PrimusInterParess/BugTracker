@@ -14,5 +14,8 @@
                 .Administrators
                 .Any(u => u.UserId == userId);
 
+        public bool IsAdminAuthorized(string userId, string organizationId)
+            => this._repo.Administrators.Any(
+                a => a.UserId == userId && a.Organizations.Any(o => o.Id == organizationId));
     }
 }

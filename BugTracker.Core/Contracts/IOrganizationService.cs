@@ -9,10 +9,10 @@ using Models.ViewModels.Organization;
 
 public interface IOrganizationService
 {
-   bool AlreadyExists(string organizationName,string userId);
+    bool AlreadyExists(string organizationName, string userId);
 
-   string Save(string name, string countryName, string townName, string streetName, string streetNumber,
-       string logoUrl,string userId);
+    string Save(string name, string countryName, string townName, string streetName, string streetNumber,
+        string logoUrl, string userId);
 
     OrganizationServiceModel GetOrganizationByUserId(string userId);
 
@@ -21,5 +21,7 @@ public interface IOrganizationService
     string GetOrganizationIdByUserId(string userId);
 
     List<OrganizationServiceModel> GetAllOrganizationsByUser(string userId);
+
+   
 }
 
