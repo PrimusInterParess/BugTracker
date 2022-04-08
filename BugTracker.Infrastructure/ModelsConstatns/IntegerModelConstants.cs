@@ -10,6 +10,10 @@
         public const int DescriptionMaxLength = 500;
 
         public const int PhoneNumberMaxLength = 30;
+        public const int FullNameMaxLength = 60;
+        public const int FullNameMinLength = 6;
+        public const int PasswordMaxLength = 100;
+        public const int PasswordMinLength = 6;
 
       
     }

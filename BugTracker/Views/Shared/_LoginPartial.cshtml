@@ -1,9 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using BugTracker.Core.Contracts
-@using BugTracker.Core.Services
-@using Microsoft.Extensions.Options
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@using BugTracker.Infrastructure.Models
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
 @inject IUserService userService
 
 <ul class="navbar-nav">
@@ -14,24 +14,53 @@
 
         var isAdmin = userService.IsUserAdministrator(userId);
 
-
         <li>
             <div class="dropdown">
                 <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     Options
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                    @if (isAdmin == false)
+                    @if (isAdmin)
+                    {
+                        <li>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Bug" asp-action="Add">Bug</a>
+                        </li>
+                        <li>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Organization" asp-action="Add">Organization</a>
+                        </li>
+                        <li>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Department" asp-action="Add">Department</a>
+                        </li>
+                        <li>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Project" asp-action="Add">Project</a>
+                        </li>
+                        <li>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="Add">Employee</a>
+                        </li>
+                    }
+                    else
                     {
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Administrator" asp-action="Register">Register as administrator</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Account settings</a>
+                        </li>
                     }
 
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Account settings</a>
-                    </li>
                 </ul>
+                @if (isAdmin)
+                {
+                    <div class="dropdown">
+                        <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            View
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><a class="nav-link text-dark" asp-area="" asp-controller="Organization" asp-action="AllOrganizations">All Organizations</a></li>
+                            <li> <a class="nav-link text-dark" asp-area="" asp-controller="Department" asp-action="All">All Departments</a></li>
+                        </ul>
+                    </div>
+                }
             </div>
         </li>
 

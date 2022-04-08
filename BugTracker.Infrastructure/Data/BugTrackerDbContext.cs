@@ -7,7 +7,7 @@ namespace BugTracker.Infrastructure.Data
     using Microsoft.EntityFrameworkCore;
     using Models;
 
-    public class BugTrackerDbContext : IdentityDbContext
+    public class BugTrackerDbContext : IdentityDbContext<User>
     {
         public BugTrackerDbContext(DbContextOptions<BugTrackerDbContext> options)
             : base(options)
@@ -60,7 +60,7 @@ namespace BugTracker.Infrastructure.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Administrator>()
-                .HasOne<IdentityUser>()
+                .HasOne<User>()
                 .WithOne()
                 .HasForeignKey<Administrator>(a => a.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -112,22 +112,22 @@ namespace BugTracker.Infrastructure.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
 
-            builder.Entity<Priority>().HasData(new[]
-            {
-                new Priority(){Name = "low"},
-                new Priority(){Name = "normal"},
-                new Priority(){Name = "urgent"},
-                new Priority(){Name = "emergency"}
-            });
+            //builder.Entity<Priority>().HasData(new[]
+            //{
+            //    new Priority(){Name = "low"},
+            //    new Priority(){Name = "normal"},
+            //    new Priority(){Name = "urgent"},
+            //    new Priority(){Name = "emergency"}
+            //});
 
-            builder.Entity<Status>().HasData(new[]
-            {
-                new Status(){Name = "new"},
-                new Status(){Name = "in progress"},
-                new Status(){Name = "on hold"},
-                new Status(){Name = "solved"},
-                new Status(){Name = "closed"}
-            });
+            //builder.Entity<Status>().HasData(new[]
+            //{
+            //    new Status(){Name = "new"},
+            //    new Status(){Name = "in progress"},
+            //    new Status(){Name = "on hold"},
+            //    new Status(){Name = "solved"},
+            //    new Status(){Name = "closed"}
+            //});
 
             base.OnModelCreating(builder);
 
