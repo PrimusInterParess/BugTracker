@@ -12,23 +12,23 @@
 
     public class DepartmentService : IDepartmentService
     {
-        private readonly BugTrackerDbContext _repo;
+        private readonly BugTrackerDbContext _data;
         private readonly IUserService _userUserService;
         private readonly IOrganizationService _organizationService;
 
         public DepartmentService(
-            BugTrackerDbContext repo,
+            BugTrackerDbContext data,
             IUserService userService,
             IOrganizationService organizationService)
         {
-            this._repo = repo;
+            this._data = data;
             this._userUserService = userService;
             this._organizationService = organizationService;
         }
 
         public bool ValidateDepartmentName(string departmentName, string organizationId)
-        => this._repo
-            .Departments 
+        => this._data
+            .Departments
             .Any(d => d.Name == departmentName && d.OrganizationId == organizationId);
 
 
@@ -44,8 +44,8 @@
 
             try
             {
-                _repo.Add(departmentData);
-                _repo.SaveChanges();
+                _data.Add(departmentData);
+                _data.SaveChanges();
 
                 return true;
 
@@ -57,7 +57,7 @@
         }
 
         public DepartmentViewModel GetDepartment(string departmentId)
-            => this._repo
+            => this._data
                     .Departments
                     .Include(d => d.Projects)
                     .Include(d => d.DepartmentEmployees)
@@ -80,17 +80,18 @@
                     }).FirstOrDefault();
 
         public List<DepartmentServiceModel> GetAllDepartments(string organizationId)
-        => _repo
+        => _data
                     .Organizations
                     .Include(o => o.Departments)
                     .Where(o => o.Id == organizationId)
-                    .SelectMany(o => o.Departments).Select(d=> 
+                    .SelectMany(o => o.Departments).Select(d =>
                        new DepartmentServiceModel()
-                      {
-                         Id = d.Id,
-                          Name = d.Name,
-                           
-                   }).ToList();
+                       {
+                           Id = d.Id,
+                           Name = d.Name,
+                           OrganizationId = organizationId
+
+                       }).ToList();
 
 
 

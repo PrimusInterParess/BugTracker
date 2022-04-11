@@ -15,7 +15,7 @@
         {
             this._repo = repo;
         }
-        
+
         public (bool, DateTime) ValidateDate(string model)
         {
             DateTime date;
@@ -45,6 +45,12 @@
 
         public bool OrganizationName(string organizationName)
             => this._repo.Organizations.Any(o => o.Name == organizationName);
+
+        public bool OrganizationId(string organizationId)
+            => this._repo.Organizations.Any(o => o.Id == organizationId);
+
+        public bool DepartmentOrganization(string departmentId, string organizationId)
+            => this._repo.Departments.Any(d => d.OrganizationId == organizationId);
     }
 
 }

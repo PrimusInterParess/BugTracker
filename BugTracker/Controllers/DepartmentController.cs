@@ -5,8 +5,6 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Authorization;
     using Infrastructure;
-    using Models.ServiceModels.Department;
-    using Models.ViewModels.Organization;
 
     using static Models.Constants.MessageConstants;
 
@@ -75,7 +73,7 @@
                 return View(department);
             }
 
-            return RedirectToAction(nameof(DepartmentController.All),"Department",new{organizationId=organizationId});
+            return RedirectToAction(nameof(DepartmentController.All),nameof(Department),new{organizationId=organizationId});
         }
 
         [Authorize]
@@ -89,8 +87,7 @@
             }
 
             var departments = _departmentService.GetAllDepartments(organizationId);
-
-
+            
             return View(departments);
         }
 

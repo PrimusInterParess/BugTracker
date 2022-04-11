@@ -1,0 +1,30 @@
+﻿@model BugTracker.Models.ServiceModels.Employee.EmployeesDepartmentServiceModel;
+
+@{
+    ViewData["Title"] = "Employees by department";
+}
+
+
+@if (Model.Employees.Count == 0)
+{
+    <div class="jumbotron">
+        <h1 class="display-4">There are no employees in this department.</h1>
+        <hr class="my-4">
+        <p>If you want to proceed please add one</p>
+        <a asp-controller="Employee" asp-action="Add" asp-route-departmentId="@Model.DeparmtnetId" asp-route-organizationId="@Model.OrganizationId" class="btn btn-secondary btn-lg" role="button">Add Employee</a>
+    </div>
+}
+else
+{
+    <a asp-controller="Employee" asp-action="Add" asp-route-departmentId="@Model.DeparmtnetId" asp-route-organizationId="@Model.OrganizationId" class="btn btn-secondary btn-lg" role="button">Add Employee</a>
+    <a asp-controller="Employee" asp-action="Add" asp-route-departmentId="@Model.DeparmtnetId" asp-route-organizationId="@Model.OrganizationId" class="btn btn-secondary btn-lg" role="button">Add Employee</a>
+
+    <ol class="list-group list-group-numbered">
+    @foreach (var employee in @Model.Employees)
+    {
+       
+            <li class="list-group-item">@employee.Name</li>
+    }
+    </ol>
+
+}

@@ -12,5 +12,7 @@ namespace BugTracker.Models.ServiceModels.Department
 
         public string Name { get; init; }
 
+        public string OrganizationId { get; set; }
+
     }
 }

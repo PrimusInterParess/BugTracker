@@ -1,33 +1,47 @@
-﻿using BugTracker.Core.Contracts;
+﻿using BugTracker.Infrastructure.Data.Models;
+
+namespace BugTracker.Controllers;
+
+using BugTracker.Core.Contracts;
 using BugTracker.Infrastructure;
-using BugTracker.Infrastructure.Models;
+using BugTracker.Models.ServiceModels.Employee;
 using BugTracker.Models.ViewModels.Employee;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel;
+using static BugTracker.WebConstants.DisplayNames;
 using static BugTracker.Models.Constants.MessageConstants;
-namespace BugTracker.Controllers;
+
 
 public class EmployeeController : Controller
 {
     private readonly IOrganizationService _organizationService;
     private readonly IUserService _userService;
-    public EmployeeController(IOrganizationService organizationService, IUserService userService)
+    private readonly IEmployeeService _employeeService;
+    private readonly IValidationService _validationService;
+
+    public EmployeeController(
+        IOrganizationService organizationService,
+        IUserService userService,
+        IEmployeeService employeeService,
+        IValidationService validationService)
     {
-        this._organizationService = organizationService;
-        this._userService = userService;
+        _organizationService = organizationService;
+        _userService = userService;
+        _employeeService = employeeService;
+        _validationService = validationService;
     }
 
     [Authorize]
-    public IActionResult Add()
+    public IActionResult Add(string departmentId, string organizationId)
     {
         var userId = this.User.GetId();
 
-        var adminId = this._userService.IsUserAdministrator(userId);
+        var isAuthorized = this._userService.IsAdminAuthorized(userId, organizationId);
 
-        if (adminId)
+        if (!isAuthorized)
         {
-           
-            return RedirectToAction("Register","Administrator");
+            return Unauthorized();
         }
 
         return View();
@@ -36,17 +50,47 @@ public class EmployeeController : Controller
 
     [HttpPost]
     [Authorize]
-    public IActionResult Add(AddEmployeeFormModel employee)
+    public IActionResult Add(string departmentId, string organizationId, AddEmployeeFormModel employee)
     {
+        if (!_validationService.OrganizationId(organizationId) || !_validationService.DepartmentOrganization(departmentId, organizationId))
+        {
+            //TODO Return proper error
+        }
 
-        return View();
+        var saved = _employeeService.Save(employee.Name, employee.Email, organizationId, departmentId);
+
+        if (!saved)
+        {
+            //TODO Return proper error
+        }
+
+        return RedirectToAction(nameof(EmployeeController.ByDepartment), nameof(Employee), new { departmentId = departmentId, organizationId = organizationId });
     }
 
 
     [Authorize]
-    public IActionResult All(string organizationId)
+    [DisplayName(EmployeesByDepartment)]
+    public IActionResult ByDepartment(
+        string departmentId,
+        string organizationId)
     {
-        return View();
+        var userId = User.GetId();
+
+        if (!_userService.IsAdminAuthorized(userId, organizationId))
+        {
+            return Unauthorized();
+        }
+
+        var employeeModel = new EmployeesDepartmentServiceModel()
+        {
+            OrganizationId = organizationId,
+            DeparmtnetId = departmentId,
+            Employees = _employeeService.GetEmployeesByDepartmentId(departmentId)
+        };
+
+
+
+        return View(employeeModel);
     }
 
 }

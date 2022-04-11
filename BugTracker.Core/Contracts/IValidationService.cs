@@ -9,5 +9,9 @@ namespace BugTracker.Core.Contracts
         bool AreDatesValid(DateTime appearedOn, DateTime isAfterDate);
 
         bool OrganizationName(string organizationName);
+
+        bool OrganizationId(string organizationId);
+
+        bool DepartmentOrganization(string departmentId, string organizationId);
     }
 }

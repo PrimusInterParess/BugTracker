@@ -1,28 +1,24 @@
-﻿using BugTracker.Infrastructure.Models;
-using BugTracker.Models.ServiceModels.Employee;
-using BugTracker.Models.ServiceModels.Project;
-
-namespace BugTracker.Core.Services
+﻿namespace BugTracker.Core.Services
 {
     using BugTracker.Infrastructure.Data.Models;
     using BugTracker.Models.ServiceModels.Department;
+    using BugTracker.Models.ServiceModels.Employee;
     using BugTracker.Models.ServiceModels.Organization;
+    using BugTracker.Models.ServiceModels.Project;
     using Contracts;
     using Infrastructure.Data;
-    using Microsoft.EntityFrameworkCore;
-    using Models.ViewModels.Organization;
 
     public class OrganizationService : IOrganizationService
     {
-        private readonly BugTrackerDbContext _repo;
+        private readonly BugTrackerDbContext _data;
 
-        public OrganizationService(BugTrackerDbContext repo)
+        public OrganizationService(BugTrackerDbContext data)
         {
-            this._repo = repo;
+            this._data = data;
         }
 
         public bool AlreadyExists(string organizationName, string userId)
-        => _repo
+        => _data
             .Organizations
             .Any(o =>
                 o.Name == organizationName &&
@@ -54,8 +50,8 @@ namespace BugTracker.Core.Services
 
             try
             {
-                this._repo.Add(organizationData);
-                this._repo.SaveChanges();
+                this._data.Add(organizationData);
+                this._data.SaveChanges();
                 organizationId = organizationData.Id;
             }
             catch (Exception)
@@ -72,7 +68,7 @@ namespace BugTracker.Core.Services
         }
 
         public OrganizationServiceModel GetOrganizationById(string organizationId)
-            => this._repo.Organizations.Where(o => o.Id == organizationId).Select(o => new OrganizationServiceModel()
+            => this._data.Organizations.Where(o => o.Id == organizationId).Select(o => new OrganizationServiceModel()
             {
                 Id = o.Id,
                 Name = o.Name,
@@ -100,7 +96,7 @@ namespace BugTracker.Core.Services
             }).FirstOrDefault();
 
         //public OrganizationFormModel GetOrganizationById(string organizationId)
-        //    => this._repo.Organizations.Where(o => o.Id == organizationId).Select(o => new);
+        //    => this._data.Organizations.Where(o => o.Id == organizationId).Select(o => new);
 
         public string GetOrganizationIdByUserId(string userId)
         {
@@ -108,7 +104,7 @@ namespace BugTracker.Core.Services
         }
 
         public List<OrganizationServiceModel> GetAllOrganizationsByUser(string userId)
-            => this._repo.Organizations.Where(o => o.Administrator.UserId == userId).Select(o =>
+            => this._data.Organizations.Where(o => o.Administrator.UserId == userId).Select(o =>
                 new OrganizationServiceModel()
                 {
                     Id = o.Id,
@@ -136,7 +132,7 @@ namespace BugTracker.Core.Services
 
         private string GetAdminId(string userId)
        => this
-           ._repo
+           ._data
            .Administrators
            .Where(a => a.UserId == userId)
            .Select(a => a.Id)
