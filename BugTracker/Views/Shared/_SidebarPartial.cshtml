@@ -1,0 +1,51 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using BugTracker.Core.Contracts
+@using BugTracker.Infrastructure.Models
+@using BugTracker.WebConstants
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@inject IUserService userService
+
+@*@if (SignInManager.IsSignedIn(User))
+{
+
+    var userId = User.GetId();
+
+    var isAdmin = userService.IsUserAdministrator(userId);
+
+
+    <aside class="main-sidebar sidebar-dark-primary elevation-4 mt-0">
+
+
+        @if (isAdmin)
+        {
+            <div class="dropdown">
+                <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    Organizations options
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Organization" asp-action="AllOrganizations">All</a>
+                    </li>
+                    <li>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Organization" asp-action="Add">Add</a>
+                    </li>
+                </ul>
+            </div>
+        }
+        else
+        {
+
+            <a class="nav-link text-dark btn" asp-area="" asp-controller="Administrator" asp-action="Register">Register as administrator</a>
+
+
+        }
+
+    </aside>
+*@
+
+
+
+
+
+
