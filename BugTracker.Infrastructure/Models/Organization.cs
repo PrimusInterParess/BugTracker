@@ -13,7 +13,7 @@
 
         [Required]
         [StringLength(DefaultMaxLength)]
-        public string Name { get; init; }
+        public string Name { get; set; }
 
         [Required]
         public string? StreetName { get; set; }

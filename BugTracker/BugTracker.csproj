@@ -24,4 +24,8 @@
 		<ProjectReference Include="..\BugTracker.Models\BugTracker.Models.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Areas\Moderator\Models\" />
+	</ItemGroup>
+
 </Project>

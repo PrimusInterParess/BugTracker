@@ -2,6 +2,6 @@
 {
     public class Roles
     {
-        public const string ModeratorRoleName = "Moderatator";
+        public const string ModeratorRoleName = "Moderator";
     }
 }

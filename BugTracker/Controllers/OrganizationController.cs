@@ -1,4 +1,6 @@
-﻿namespace BugTracker.Controllers
+﻿using BugTracker.Models.ServiceModels.Organization;
+
+namespace BugTracker.Controllers
 {
     using BugTracker.Infrastructure.Data.Models;
     using BugTracker.Infrastructure.Models;
@@ -79,34 +81,21 @@
                 return View(organization);
             }
 
-            return RedirectToAction(nameof(OrganizationController.Information), nameof(Organization), new { organizationId = organizationId });
+            return RedirectToAction(nameof(OrganizationController.Information),
+                nameof(Organization),
+                new { organizationId = organizationId });
 
         }
 
-        [Authorize]
-        [DisplayName("All Organizations")]
-        public IActionResult AllOrganizations()
-        {
-            var userId = User.GetId();
-
-            if (!_userService.IsUserAdministrator(userId))
-            {
-                return RedirectToAction(nameof(AdministratorController.Register), "Administrator");
-            }
-
-            var organizations = _organizationService.GetAllOrganizationsByUser(userId);
-            
-            return View(organizations);
-        }
 
         [Authorize]
         public IActionResult Edit(string organizationId)
         {
             var userId = User.GetId();
 
-            if (!_userService.IsUserAdministrator(userId))
+            if (!_userService.IsAdminAuthorized(userId, organizationId))
             {
-                return RedirectToAction(nameof(AdministratorController.Register), nameof(Administrator));
+                return BadRequest();
 
             }
 
@@ -127,8 +116,66 @@
         [HttpPost]
         public IActionResult Edit(string organizationId, OrganizationFormModel organization)
         {
+            var userId = User.GetId();
 
-            return View();
+            if (!_userService.IsAdminAuthorized(userId, organizationId))
+            {
+                return BadRequest();
+            }
+
+            var edited = _organizationService.Edit(
+                organizationId,
+                organization.Name,
+                organization.Country,
+                organization.TownName,
+                organization.StreetName,
+                organization.StreetNumber,
+                organization.LogoUrl);
+
+
+            return RedirectToAction(nameof(OrganizationController.Information), nameof(Organization),
+                new { organizationId = organizationId });
+
+
+        }
+
+        [Authorize]
+        public IActionResult Remove()
+        {
+            var userId = User.GetId();
+
+            var isUserAdmin = _userService.IsUserAdministrator(userId);
+
+            if (!isUserAdmin)
+            {
+                return BadRequest();
+            }
+
+            var organizations = _organizationService.GetAllOrganizationsByUser(userId);
+
+
+            return View(organizations);
+
+        }
+
+        [Authorize]
+        public IActionResult Delete(string organizationId)
+        {
+            var userId = User.GetId();
+
+            var isUserAdmin = _userService.IsUserAdministrator(userId);
+
+            if (!isUserAdmin)
+            {
+                return BadRequest();
+            }
+
+            var deleted = _organizationService.Delete(organizationId);
+
+            var allOrganizations = _organizationService.GetAllOrganizationsByUser(userId);
+
+            return RedirectToAction("Index");
+
         }
 
 
@@ -137,7 +184,7 @@
         {
             var userId = User.GetId();
 
-            if (!IsAuthorized(userId,organizationId))
+            if (!IsAuthorized(userId, organizationId))
             {
                 return RedirectToAction("Register", "Administrator");
             }
@@ -145,6 +192,23 @@
             var organization = _organizationService.GetOrganizationById(organizationId);
 
             return View(organization);
+        }
+
+
+        [Authorize]
+        [DisplayName("All Organizations")]
+        public IActionResult AllOrganizations()
+        {
+            var userId = User.GetId();
+
+            if (!_userService.IsUserAdministrator(userId))
+            {
+                return RedirectToAction(nameof(AdministratorController.Register), "Administrator");
+            }
+
+            var organizations = _organizationService.GetAllOrganizationsByUser(userId);
+
+            return View(organizations);
         }
 
         private bool IsAuthorized(string userId, string organizationId) =>

@@ -24,6 +24,17 @@
                 o.Name == organizationName &&
                 o.Administrator.UserId == userId);
 
+        public bool Delete(string organizationId)
+        {
+            var organizationData = _data.Organizations.FirstOrDefault(o => o.Id == organizationId);
+
+           var deleted= _data.Organizations.Remove(organizationData);
+
+           _data.SaveChanges();
+
+           return true;
+        }
+
 
         public string Save(
             string name,
@@ -129,6 +140,41 @@
                     }).ToList()
 
                 }).ToList();
+
+        public bool Edit(string organizationId, string name, string country, string townName, string streetName, string streetNumber, string logoUrl)
+        {
+            var organizationData = _data.
+                Organizations.
+                Where(o => o.Id == organizationId).
+                First();
+
+            if (organizationData == null)
+            {
+                return false;
+            }
+
+
+            try
+            {
+                organizationData.Name = name;
+                organizationData.Country = country;
+                organizationData.TownName = townName;
+                organizationData.StreetName = streetName;
+                organizationData.StreetNumber = streetNumber;
+                organizationData.LogoUrl= logoUrl;
+
+                _data.SaveChanges();
+                return true;
+
+            }
+            catch (Exception e)
+            {
+                return false;
+                
+            }
+
+            
+        }
 
         private string GetAdminId(string userId)
        => this

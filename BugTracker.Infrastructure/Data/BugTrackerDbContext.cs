@@ -43,10 +43,12 @@ namespace BugTracker.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Organization>().HasMany(o => o.OrganizationProjects).WithOne(p => p.Organization)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Organization>().HasMany(o => o.OrganizationEmployees).WithOne(e => e.Organization)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Organization>().HasMany(o => o.Departments).WithOne(d => d.Organization).OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Administrator>()
                  .HasMany(a => a.Organizations)
@@ -87,10 +89,10 @@ namespace BugTracker.Infrastructure.Data
                 .WithOne(c => c.Bug)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<Department>()
-                .HasOne(d => d.Organization)
-                .WithMany(o => o.Departments)
-                .OnDelete(DeleteBehavior.Restrict);
+            //builder.Entity<Department>()
+            //    .HasOne(d => d.Organization)
+            //    .WithMany(o => o.Departments)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Department>()
                 .HasMany(d => d.Projects)

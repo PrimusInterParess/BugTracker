@@ -11,6 +11,8 @@ public interface IOrganizationService
 {
     bool AlreadyExists(string organizationName, string userId);
 
+    bool Delete(string organizationId);
+
     string Save(string name, string countryName, string townName, string streetName, string streetNumber,
         string logoUrl, string userId);
 
@@ -22,6 +24,7 @@ public interface IOrganizationService
 
     List<OrganizationServiceModel> GetAllOrganizationsByUser(string userId);
 
-   
+    bool Edit(string organizationId, string name, string country, string townName, string streetName, string streetNumber, string logoUrl);
+
 }
 
