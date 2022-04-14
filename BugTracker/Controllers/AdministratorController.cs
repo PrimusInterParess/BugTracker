@@ -1,4 +1,6 @@
-﻿namespace BugTracker.Controllers
+﻿using System.Security.Claims;
+
+namespace BugTracker.Controllers
 {
     using System.ComponentModel;
     using Microsoft.AspNetCore.Authorization;
@@ -27,6 +29,7 @@
         {
 
             var userId = User.GetId();
+            string email = User.FindFirstValue(ClaimTypes.Email);
 
 
             var alreadyExists = _userService.IsUserAdministrator(userId);
@@ -36,7 +39,12 @@
                 return RedirectToAction("Index", "Home");
             }
 
-            return View();
+            var admin = new RegisterAdminFormModel()
+            {
+                Email = email
+            };
+
+            return View(admin);
         }
 
         [HttpPost]

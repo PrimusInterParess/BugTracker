@@ -1,4 +1,4 @@
-﻿@model List<DepartmentServiceModel>
+﻿@model DepartmentListModel
 
 
 @{
@@ -6,32 +6,46 @@
 }
 
 <div class="text-center mt-2 mb-2">
-<h3>Departments</h3>
+    <h3>Departments</h3>
 </div>
 
-@for (int i = 0; i < Model.Count; i++)
+@if (Model.Departments.Count == 0)
 {
-    var department = Model[i];
+    <div class="jumbotron">
+        <h1 class="display-4">The are not Departments</h1>
+        <hr class="my-4">
+        <p>If you want to proceed please add one</p>
+        <a asp-controller="Department" asp-action="Add" asp-route-organizationId="@Model.OrganizationId" class="btn btn-secondary btn-lg" role="button">Add Department</a>
+    </div>
+}
+else
+{
+    @for (int i = 0; i < Model.Departments.Count; i++)
+    {
+        var department = Model.Departments[i];
 
-    <div class="accordion mb-3" id="departments">
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="heading-@i">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#@department.Name" aria-expanded="false" aria-controls="@department.Name">
-                    @department.Name
-                </button>
-            </h2>
-            <div id="@department.Name" class="accordion-collapse collapse" aria-labelledby="heading-@i" data-bs-parent="#departments">
-                <div class="accordion-body text-center">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">  <a class="btn" asp-area="" asp-controller="Project" asp-route-departmentId="@department.Id" asp-action="All">Projects</a></li>
-                        <li class="list-group-item">  <a class="btn" asp-area="" asp-controller="Organization" asp-route-organzationId="@department.OrganizationId" asp-action="Information">Organization</a></li>
-                        <li class="list-group-item">    <a class="btn" asp-area="" asp-controller="Employee" asp-route-departmentId="@department.Id" asp-route-organizationId="@department.OrganizationId" asp-action="ByDepartment">Employees</a></li>
-                    </ul>
+        <div class="accordion mb-3" id="departments">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading-@i">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#@department.Name" aria-expanded="false" aria-controls="@department.Name">
+                        @department.Name
+                    </button>
+                </h2>
+                <div id="@department.Name" class="accordion-collapse collapse" aria-labelledby="heading-@i" data-bs-parent="#departments">
+                    <div class="accordion-body text-center">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">  <a class="btn" asp-area="" asp-controller="Project" asp-route-organizationId="@Model.OrganizationId" asp-route-departmentId="@department.Id" asp-action="All">Projects</a></li>
+                            <li class="list-group-item"> <a class="btn" asp-area="" asp-controller="Organization" asp-route-organizationId="@Model.OrganizationId" asp-action="Information">Information</a></li>
+                            <li class="list-group-item">    <a class="btn" asp-area="" asp-controller="Employee" asp-route-departmentId="@department.Id" asp-route-organizationId="@Model.OrganizationId" asp-action="ByDepartment">Employees</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    }
 }
+
+
 
 
 

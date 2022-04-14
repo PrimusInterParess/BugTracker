@@ -24,7 +24,7 @@
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                         <li>
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Organization" asp-action="AllOrganizations">All</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Organization" asp-action="All">All</a>
                         </li>
                         <li>
                             <a class="nav-link text-dark" asp-area="" asp-controller="Organization" asp-action="Add">Add</a>
@@ -36,7 +36,27 @@
                 </div>
             </li>
 
+        }
+        else
+        {
+            
+            <li>
+                <div class="dropdown">
+                    <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        Organizations options
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Administrator" asp-action="Register">Register as Administrator</a>
+                        </li>
+                        <li>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="Register">Register as Employee</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
 
+         
         }
 
 

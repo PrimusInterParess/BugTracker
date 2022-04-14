@@ -13,7 +13,7 @@ namespace BugTracker.Core.Contracts
         bool ValidateDepartmentName(string departmentName,string organizationId);
 
         bool Save(AddDepartmentFormModel department);
-       List<DepartmentServiceModel> GetAllDepartments(string organizationId);
+       DepartmentListModel GetAllDepartments(string organizationId);
         DepartmentViewModel GetDepartment(string departmentId);
     }
 }

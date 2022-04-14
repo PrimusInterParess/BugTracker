@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace BugTracker.Infrastructure.Migrations
+namespace BugTracker.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(BugTrackerDbContext))]
-    [Migration("20220413115433_add_cascade-delete-Organization")]
-    partial class add_cascadedeleteOrganization
+    [Migration("20220414065204_k")]
+    partial class k
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

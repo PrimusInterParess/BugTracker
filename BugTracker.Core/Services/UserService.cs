@@ -5,17 +5,19 @@
 
     public class UserService : IUserService
     {
-        private readonly BugTrackerDbContext _repo;
+        private readonly BugTrackerDbContext _data;
 
-        public UserService(BugTrackerDbContext repo) => this._repo = repo;
+        public UserService(BugTrackerDbContext data) => this._data = data;
 
         public bool IsUserAdministrator(string userId)
-            => this._repo
+            => this._data
                 .Administrators
                 .Any(u => u.UserId == userId);
 
         public bool IsAdminAuthorized(string userId, string organizationId)
-            => this._repo.Administrators.Any(
+            => _data.Administrators.Any(
                 a => a.UserId == userId && a.Organizations.Any(o => o.Id == organizationId));
+
+      
     }
 }

@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace BugTracker.Infrastructure.Migrations
+namespace BugTracker.Infrastructure.Data.Migrations
 {
-    public partial class initial : Migration
+    public partial class k : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

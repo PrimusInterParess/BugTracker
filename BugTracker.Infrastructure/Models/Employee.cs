@@ -27,8 +27,10 @@ namespace BugTracker.Infrastructure.Data.Models
         public string DepartmentId { get; set; }
 
         [ForeignKey(nameof(DepartmentId))]
-   
+
         public Department Department { get; set; }
+
+        public string UserId { get; set; }
 
         public ICollection<Bug> EmployeeBugs { get; set; } = new HashSet<Bug>();
 

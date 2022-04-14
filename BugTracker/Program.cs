@@ -22,7 +22,8 @@ builder.Services
     .AddTransient<IDepartmentService, DepartmentService>()
     .AddTransient<IAdministratorService, AdministratorService>()
     .AddTransient<IUserService, UserService>()
-    .AddTransient<IEmployeeService, EmployeeService>();
+    .AddTransient<IEmployeeService, EmployeeService>()
+    .AddTransient<IProjectService, ProjectService>();
 
 builder.Services.AddDefaultIdentity<User>(options =>
     {

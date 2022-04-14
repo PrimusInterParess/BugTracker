@@ -197,7 +197,7 @@ namespace BugTracker.Controllers
 
         [Authorize]
         [DisplayName("All Organizations")]
-        public IActionResult AllOrganizations()
+        public IActionResult All()
         {
             var userId = User.GetId();
 

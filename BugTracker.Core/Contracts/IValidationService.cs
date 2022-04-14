@@ -13,5 +13,9 @@ namespace BugTracker.Core.Contracts
         bool OrganizationId(string organizationId);
 
         bool DepartmentOrganization(string departmentId, string organizationId);
+
+        bool DepartmentId(string departmentId);
+
+        bool ProjectNameExists(string name, string departmentId);
     }
 }

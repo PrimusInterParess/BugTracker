@@ -7,13 +7,13 @@
 
     public class ValidationService : IValidationService
     {
-        private readonly BugTrackerDbContext _repo;
+        private readonly BugTrackerDbContext _data;
 
 
         public ValidationService(
-            BugTrackerDbContext repo)
+            BugTrackerDbContext data)
         {
-            this._repo = repo;
+            this._data = data;
         }
 
         public (bool, DateTime) ValidateDate(string model)
@@ -44,13 +44,19 @@
         }
 
         public bool OrganizationName(string organizationName)
-            => this._repo.Organizations.Any(o => o.Name == organizationName);
+            => this._data.Organizations.Any(o => o.Name == organizationName);
 
         public bool OrganizationId(string organizationId)
-            => this._repo.Organizations.Any(o => o.Id == organizationId);
+            => this._data.Organizations.Any(o => o.Id == organizationId);
 
         public bool DepartmentOrganization(string departmentId, string organizationId)
-            => this._repo.Departments.Any(d => d.OrganizationId == organizationId);
+            => this._data.Departments.Any(d => d.Id == departmentId && d.OrganizationId == organizationId);
+
+        public bool DepartmentId(string departmentId)
+            => _data.Departments.Any(d => d.Id == departmentId);
+
+        public bool ProjectNameExists(string name, string departmentId)
+            => _data.Departments.Where(d => d.Id == departmentId).Any(d => d.Projects.Any(p => p.Name == name));
     }
 
 }

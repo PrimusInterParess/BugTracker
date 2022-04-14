@@ -79,19 +79,20 @@
                         }).OrderBy(e => e).ToList()
                     }).FirstOrDefault();
 
-        public List<DepartmentServiceModel> GetAllDepartments(string organizationId)
-        => _data
-                    .Organizations
-                    .Include(o => o.Departments)
-                    .Where(o => o.Id == organizationId)
-                    .SelectMany(o => o.Departments).Select(d =>
-                       new DepartmentServiceModel()
-                       {
-                           Id = d.Id,
-                           Name = d.Name,
-                           OrganizationId = organizationId
+        public DepartmentListModel GetAllDepartments(string organizationId)
+            => _data
+                .Organizations
+                .Where(o => o.Id == organizationId)
+                .Select(o => new DepartmentListModel()
+                {
+                    OrganizationId = o.Id,
+                    Departments = o.Departments.Select(d => new DepartmentServiceModel()
+                    {
+                        Id = d.Id,
+                        Name = d.Name
+                    }).ToList()
+                }).FirstOrDefault();
 
-                       }).ToList();
 
 
 

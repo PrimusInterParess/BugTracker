@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace BugTracker.Infrastructure.Migrations
+namespace BugTracker.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(BugTrackerDbContext))]
-    [Migration("20220408112018_initial")]
-    partial class initial
+    [Migration("20220414070929_employee-userId")]
+    partial class employeeuserId
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -131,11 +131,18 @@ namespace BugTracker.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
 
                     b.HasIndex("OrganizationId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Employees");
                 });
@@ -603,6 +610,12 @@ namespace BugTracker.Infrastructure.Migrations
                     b.HasOne("BugTracker.Infrastructure.Data.Models.Organization", "Organization")
                         .WithMany("OrganizationEmployees")
                         .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("BugTracker.Infrastructure.Models.User", null)
+                        .WithOne()
+                        .HasForeignKey("BugTracker.Infrastructure.Data.Models.Employee", "UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 

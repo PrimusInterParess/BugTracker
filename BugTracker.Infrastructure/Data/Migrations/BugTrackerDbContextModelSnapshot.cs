@@ -4,18 +4,16 @@ using BugTracker.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace BugTracker.Infrastructure.Migrations
+namespace BugTracker.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(BugTrackerDbContext))]
-    [Migration("20220413115935_add_cascade-delete-Organization1")]
-    partial class add_cascadedeleteOrganization1
+    partial class BugTrackerDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -131,11 +129,18 @@ namespace BugTracker.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
 
                     b.HasIndex("OrganizationId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Employees");
                 });
@@ -586,7 +591,7 @@ namespace BugTracker.Infrastructure.Migrations
                     b.HasOne("BugTracker.Infrastructure.Data.Models.Organization", "Organization")
                         .WithMany("Departments")
                         .HasForeignKey("OrganizationId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Organization");
@@ -603,7 +608,13 @@ namespace BugTracker.Infrastructure.Migrations
                     b.HasOne("BugTracker.Infrastructure.Data.Models.Organization", "Organization")
                         .WithMany("OrganizationEmployees")
                         .HasForeignKey("OrganizationId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("BugTracker.Infrastructure.Models.User", null)
+                        .WithOne()
+                        .HasForeignKey("BugTracker.Infrastructure.Data.Models.Employee", "UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Department");
@@ -633,7 +644,7 @@ namespace BugTracker.Infrastructure.Migrations
                     b.HasOne("BugTracker.Infrastructure.Data.Models.Organization", "Organization")
                         .WithMany("OrganizationProjects")
                         .HasForeignKey("OrganizationId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Department");

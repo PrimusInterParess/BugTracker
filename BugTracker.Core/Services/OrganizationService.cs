@@ -48,7 +48,7 @@
             var getAdminId = GetAdminId(userId);
             var organizationId = string.Empty;
 
-            Organization organizationData = new Organization()
+            var organizationData = new Organization()
             {
                 Name = name,
                 Country = countryName,
@@ -175,6 +175,9 @@
 
             
         }
+
+        public string GetOrganizationNameById(string id)
+            => _data.Organizations.Where(o => o.Id == id).Select(o => o.Name).FirstOrDefault();
 
         private string GetAdminId(string userId)
        => this

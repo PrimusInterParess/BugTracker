@@ -5,5 +5,6 @@
         bool IsUserAdministrator(string user);
         bool IsAdminAuthorized(string userId,string organizationId);
 
+
     }
 }

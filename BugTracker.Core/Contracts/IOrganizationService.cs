@@ -26,5 +26,7 @@ public interface IOrganizationService
 
     bool Edit(string organizationId, string name, string country, string townName, string streetName, string streetNumber, string logoUrl);
 
+    string GetOrganizationNameById(string id);
+
 }
 

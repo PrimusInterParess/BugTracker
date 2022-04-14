@@ -19,38 +19,59 @@ public class EmployeeController : Controller
     private readonly IUserService _userService;
     private readonly IEmployeeService _employeeService;
     private readonly IValidationService _validationService;
+    private readonly IDepartmentService _departmentService;
 
     public EmployeeController(
         IOrganizationService organizationService,
         IUserService userService,
         IEmployeeService employeeService,
-        IValidationService validationService)
+        IValidationService validationService,
+        IDepartmentService departmentService)
     {
         _organizationService = organizationService;
         _userService = userService;
         _employeeService = employeeService;
         _validationService = validationService;
+        _departmentService = departmentService;
     }
 
     [Authorize]
     public IActionResult Add(string departmentId, string organizationId)
     {
-        var userId = this.User.GetId();
+        var employeeModel = new EmployeeFormModelRegister();
 
-        var isAuthorized = this._userService.IsAdminAuthorized(userId, organizationId);
+        if (departmentId == null)
+        {
+            var departments = _departmentService.GetAllDepartments(organizationId);
+
+        
+
+           return View();
+        }
+
+        var userId = User.GetId();
+
+        var isAuthorized = _userService.IsAdminAuthorized(userId, organizationId);
+
+        var organizationName = _organizationService.GetOrganizationNameById(organizationId);
 
         if (!isAuthorized)
         {
             return Unauthorized();
         }
 
-        return View();
+        employeeModel = new EmployeeFormModelRegister()
+        {
+            OrganizationName = organizationName
+        };
+
+        return View(employeeModel);
     }
 
 
     [HttpPost]
     [Authorize]
-    public IActionResult Add(string departmentId, string organizationId, AddEmployeeFormModel employee)
+    public IActionResult Add(string departmentId, string organizationId, EmployeeFormModelRegister employee)
     {
         if (!_validationService.OrganizationId(organizationId) || !_validationService.DepartmentOrganization(departmentId, organizationId))
         {
@@ -91,6 +112,29 @@ public class EmployeeController : Controller
 
 
         return View(employeeModel);
+    }
+
+    [Authorize]
+    public IActionResult Register()
+    {
+
+
+
+
+        return View();
+
+    }
+
+    [Authorize]
+    [HttpPost]
+    public IActionResult Register(EmployeeFormModelRegister employee)
+    {
+
+
+
+
+        return View();
+
     }
 
 }

@@ -3,6 +3,8 @@ namespace BugTracker.Models.ServiceModels.Department
 {
     public class DepartmentListModel
     {
-        public ICollection<DepartmentServiceModel> Departments { get; set; }
+        public string OrganizationId { get; set; }
+
+        public List<DepartmentServiceModel> Departments { get; set; } = new List<DepartmentServiceModel>();
     }
 }
