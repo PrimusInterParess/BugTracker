@@ -15,7 +15,7 @@
         public string Name { get; set; }
 
         [ForeignKey(nameof(Organization))]
-        public string OrganizationId { get; set; }
+        public string? OrganizationId { get; set; }
 
         public Organization Organization { get; set; }
 

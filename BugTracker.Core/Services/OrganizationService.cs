@@ -26,9 +26,12 @@
 
         public bool Delete(string organizationId)
         {
-            var organizationData = _data.Organizations.FirstOrDefault(o => o.Id == organizationId);
+            var organizationData = 
+                _data
+                .Organizations
+                .FirstOrDefault(o => o.Id == organizationId);
 
-           var deleted= _data.Organizations.Remove(organizationData);
+            var deleted = _data.Remove(organizationData);
 
            _data.SaveChanges();
 

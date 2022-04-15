@@ -42,82 +42,92 @@ namespace BugTracker.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Organization>().HasMany(o => o.OrganizationProjects).WithOne(p => p.Organization)
-                .OnDelete(DeleteBehavior.Restrict);
+        //    builder.Entity<Organization>().HasMany(o => o.OrganizationProjects).WithOne(p => p.Organization)
+        //        .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Entity<Organization>().HasMany(o => o.OrganizationEmployees).WithOne(e => e.Organization)
-                .OnDelete(DeleteBehavior.Restrict);
+        //    builder.Entity<Organization>().HasMany(o => o.OrganizationEmployees).WithOne(e => e.Organization)
+        //        .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Entity<Organization>().HasMany(o => o.Departments).WithOne(d => d.Organization).OnDelete(DeleteBehavior.Cascade);
+        //    builder.Entity<Organization>().HasMany(o => o.Departments).WithOne(d => d.Organization).OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Administrator>()
                  .HasMany(a => a.Organizations)
                  .WithOne(o => o.Administrator)
-                 .OnDelete(DeleteBehavior.Restrict);
+                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Employee>().HasMany(e => e.Projects).WithMany(p => p.Employees).UsingEntit
+
+            //builder.Entity<Department>().HasMany(d => d.Projects).WithOne(p => p.Department)
+            //    .OnDelete(DeleteBehavior.Cascade);
+
+            //builder.Entity<Department>().HasMany(d => d.DepartmentEmployees).WithOne(e => e.Department)
+            //    .OnDelete(DeleteBehavior.Cascade);
 
 
-            builder.Entity<Employee>()
-                .HasOne(e => e.Department)
-                .WithMany(d => d.DepartmentEmployees)
-                .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<Administrator>()
-                .HasOne<User>()
-                .WithOne()
-                .HasForeignKey<Administrator>(a => a.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<Employee>()
-                .HasOne<User>()
-                .WithOne()
-                .HasForeignKey<Employee>(e => e.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+            //builder.Entity<Employee>()
+            //    .HasOne(e => e.Department)
+            //    .WithMany(d => d.DepartmentEmployees)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<Bug>().HasOne(b => b.Priority)
-                .WithMany(p => p.PriorityBugs)
-                .OnDelete(DeleteBehavior.Restrict);
+            //builder.Entity<Administrator>()
+            //    .HasOne<User>()
+            //    .WithOne()
+            //    .HasForeignKey<Administrator>(a => a.UserId)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<Bug>().HasOne(b => b.Status)
-                .WithMany(s => s.StatusBugs)
-                .OnDelete(DeleteBehavior.Restrict);
+            //builder.Entity<Employee>()
+            //    .HasOne<User>()
+            //    .WithOne()
+            //    .HasForeignKey<Employee>(e => e.UserId)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<Bug>()
-                .HasOne(b => b.Project)
-                .WithMany(p => p.Bugs)
-                .OnDelete(DeleteBehavior.Restrict);
+            //builder.Entity<Bug>().HasOne(b => b.Priority)
+            //    .WithMany(p => p.PriorityBugs)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<Bug>()
-                .HasMany(b => b.BugEmployees)
-                .WithMany(e => e.EmployeeBugs);
+            //builder.Entity<Bug>().HasOne(b => b.Status)
+            //    .WithMany(s => s.StatusBugs)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<Bug>()
-                .HasMany(b => b.Comments)
-                .WithOne(c => c.Bug)
-                .OnDelete(DeleteBehavior.Restrict);
+            //builder.Entity<Bug>()
+            //    .HasOne(b => b.Project)
+            //    .WithMany(p => p.Bugs)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<Department>()
-                .HasOne(d => d.Organization)
-                .WithMany(o => o.Departments)
-                .OnDelete(DeleteBehavior.Restrict);
+            //builder.Entity<Bug>()
+            //    .HasMany(b => b.BugEmployees)
+            //    .WithMany(e => e.EmployeeBugs);
 
-            builder.Entity<Department>()
-                .HasMany(d => d.Projects)
-                .WithOne(p => p.Department)
-                .OnDelete(DeleteBehavior.Restrict);
+            //builder.Entity<Bug>()
+            //    .HasMany(b => b.Comments)
+            //    .WithOne(c => c.Bug)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<Department>()
-                .HasMany(d => d.DepartmentEmployees)
-                .WithOne(e => e.Department)
-                .OnDelete(DeleteBehavior.Restrict);
+            ////builder.Entity<Department>()
+            ////    .HasOne(d => d.Organization)
+            ////    .WithMany(o => o.Departments)
+            ////    .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<Project>()
-                .HasMany(p => p.Employees)
-                .WithMany(e => e.Projects);
+            //builder.Entity<Department>()
+            //    .HasMany(d => d.Projects)
+            //    .WithOne(p => p.Department)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<Comment>()
-                .HasOne(c => c.User)
-                .WithMany(u => u.Comments)
-                .OnDelete(DeleteBehavior.Restrict);
+            //builder.Entity<Department>()
+            //    .HasMany(d => d.DepartmentEmployees)
+            //    .WithOne(e => e.Department)
+            //    .OnDelete(DeleteBehavior.Restrict);
+
+            //builder.Entity<Project>()
+            //    .HasMany(p => p.Employees)
+            //    .WithMany(e => e.Projects);
+
+            //builder.Entity<Comment>()
+            //    .HasOne(c => c.User)
+            //    .WithMany(u => u.Comments)
+            //    .OnDelete(DeleteBehavior.Restrict);
 
 
             //builder.Entity<Priority>().HasData(new[]

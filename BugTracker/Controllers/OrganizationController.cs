@@ -77,7 +77,7 @@ namespace BugTracker.Controllers
             if (organizationId == null)
             {
                 ModelState.AddModelError(String.Empty, InvalidAttempt);
-
+                 
                 return View(organization);
             }
 

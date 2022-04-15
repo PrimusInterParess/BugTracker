@@ -15,13 +15,13 @@
         [StringLength(DefaultMaxLength)]
         public string Content { get; set; }
 
-        public string UserId { get; set; }
+        public string? UserId { get; set; }
         [ForeignKey(nameof(UserId))]
         public Employee User { get; set; }
 
-        public string BugId { get; set; }
+        public string? BugId { get; set; }
 
-        [ForeignKey(nameof(UserId))]
+        [ForeignKey(nameof(BugId))]
         public Bug Bug { get; set; }
 
         public DateTime CreatedOn { get; set; } = DateTime.Now;

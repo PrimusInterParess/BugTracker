@@ -20,11 +20,11 @@ namespace BugTracker.Infrastructure.Data.Models
         [StringLength(EmailNameMaxLength)]
         public string Email { get; set; }
 
-        public string OrganizationId { get; set; }
+        public string? OrganizationId { get; set; }
 
         public Organization Organization { get; set; }
 
-        public string DepartmentId { get; set; }
+        public string? DepartmentId { get; set; }
 
         [ForeignKey(nameof(DepartmentId))]
 
@@ -35,6 +35,7 @@ namespace BugTracker.Infrastructure.Data.Models
         public ICollection<Bug> EmployeeBugs { get; set; } = new HashSet<Bug>();
 
         public ICollection<Project> Projects { get; set; } = new HashSet<Project>();
+
         public ICollection<Comment> Comments { get; set; } = new HashSet<Comment>();
 
     }

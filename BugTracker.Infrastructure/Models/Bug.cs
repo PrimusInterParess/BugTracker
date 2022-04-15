@@ -24,7 +24,7 @@
         [ForeignKey(nameof(StatusId))]
         public Status Status { get; set; }
 
-        public string PriorityId { get; set; }
+        public string? PriorityId { get; set; }
 
         [ForeignKey(nameof(PriorityId))]
         public Priority Priority { get; set; }
@@ -33,11 +33,18 @@
 
         public DateTime DueDate { get; set; }
 
-        public string ProjectId { get; set; }
+        public string? ProjectId { get; set; }
 
         [ForeignKey(nameof(ProjectId))]
         public Project Project { get; set; }
 
+        public string? OrganizationId { get; set; }
+
+        public Organization Organization { get; set; }
+
+        public string CreatedBy { get; set; }
+
+        public string ModifiedBy { get; set; }
         public ICollection<Employee> BugEmployees { get; set; } = new HashSet<Employee>();
 
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
