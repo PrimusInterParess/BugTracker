@@ -26,6 +26,8 @@
 
         public DateTime CreatedOn { get; set; } = DateTime.Now;
 
+        public DateTime EditedOn { get; set; } = DateTime.Now;
+
 
     }
 }

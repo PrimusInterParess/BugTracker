@@ -42,5 +42,7 @@
         public ICollection<Project> OrganizationProjects { get; set; } = new HashSet<Project>();
 
         public ICollection<Employee> OrganizationEmployees { get; set; } = new HashSet<Employee>();
+
+        public ICollection<Bug> Bugs { get; set; } = new HashSet<Bug>();
     }
 }

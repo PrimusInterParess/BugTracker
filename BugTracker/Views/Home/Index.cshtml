@@ -1,19 +1,59 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@using BugTracker.Infrastructure.Models
+@using BugTracker.WebConstants
+@using BugTracker.Core.Contracts
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@inject IUserService userService
+
+@{
     ViewData["Title"] = "Home Page";
 }
-<row>
-    <div class="mb-3 mt-3 "></div>
-    <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="/HomePagePic/Business-Control.png" class="d-block w-100" alt="Fist slide">
-            </div>
-            <div class="carousel-item">
-                <img src="/HomePagePic/54-Commitment-to-Work.jpg" class="d-block w-100" alt="Second slide">
-            </div>
-            <div class="carousel-item">
-                <img src="/HomePagePic/Teamwork-Team-Together-Everyone-Acheives-More.png" class="d-block w-100" alt="Second slide">
-            </div>
+
+@if (SignInManager.IsSignedIn(User))
+{
+
+    var userId = User.GetId();
+
+    var isAdmin = userService.IsUserAdministrator(userId);
+    var isEmployee = userService.IsUserEmployee(userId);
+    var moderator = User.IsInRole(Roles.ModeratorRoleName);
+
+
+    if (!isAdmin && !isEmployee)
+    {
+        
+        <div class="text-center mb-8 mt-8">
+
+         <a class="btn btn-secondary"  asp-controller="Employee" asp-action="Register">Register as Employee</a>
+
+                <a class="btn btn-secondary" asp-controller="Administrator" asp-action="Register">Register as Administrator</a>
         </div>
-    </div>
-</row>
+
+       
+    }
+    else
+    {
+        <row class="mb-3 mt-3">
+
+            <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="/HomePagePic/Business-Control.png" class="d-block w-100" alt="Fist slide">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="/HomePagePic/54-Commitment-to-Work.jpg" class="d-block w-100" alt="Second slide">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="/HomePagePic/Teamwork-Team-Together-Everyone-Acheives-More.png" class="d-block w-100" alt="Second slide">
+                    </div>
+                </div>
+            </div>
+        </row>
+    }
+
+
+
+}
+

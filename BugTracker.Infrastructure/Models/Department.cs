@@ -21,6 +21,8 @@
 
         public string DepartmentSubject { get; set; }
 
+        public ICollection<Bug> Bugs { get; set; } = new HashSet<Bug>();
+
         public ICollection<Project> Projects { get; set; } = new HashSet<Project>();
 
         public ICollection<Employee> DepartmentEmployees { get; set; } = new HashSet<Employee>();

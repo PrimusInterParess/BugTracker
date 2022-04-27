@@ -1,7 +1,6 @@
-﻿using BugTracker.Infrastructure.Data.Models;
+﻿namespace BugTracker.Controllers;
 
-namespace BugTracker.Controllers;
-
+using BugTracker.Infrastructure.Data.Models;
 using BugTracker.Core.Contracts;
 using BugTracker.Infrastructure;
 using BugTracker.Models.ServiceModels.Employee;
@@ -44,9 +43,9 @@ public class EmployeeController : Controller
         {
             var departments = _departmentService.GetAllDepartments(organizationId);
 
-        
 
-           return View();
+
+            return View();
         }
 
         var userId = User.GetId();

@@ -73,6 +73,7 @@ namespace BugTracker.Infrastructure
                 .GetResult();
         }
 
+
         private static void SeedStatus(IServiceProvider services)
         {
             var repo = services.GetRequiredService<BugTrackerDbContext>();

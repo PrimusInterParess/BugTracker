@@ -92,9 +92,9 @@
                     DueDate = b.DueDate,
                     BugEmployees = b.BugEmployees.Select(e => new EmployeeViewModel()
                     {
-                        Id = e.Id,
-                        Name = e.Name,
-                        Department = e.Department.Name
+                        Id = e.Employee.Id,
+                        Name = e.Employee.Name,
+                        Department = e.Employee.Department.Name
                     }).ToList(),
 
                 }).ToList();

@@ -1,10 +1,10 @@
-﻿using BugTracker.Infrastructure.Models;
-
+﻿
 namespace BugTracker.Infrastructure.Data.Models
 {
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-
+    using BugTracker.Infrastructure.Models;
+    
     using static ModelsConstants.IntegerModelConstants;
 
     public class Employee
@@ -32,9 +32,11 @@ namespace BugTracker.Infrastructure.Data.Models
 
         public string UserId { get; set; }
 
-        public ICollection<Bug> EmployeeBugs { get; set; } = new HashSet<Bug>();
+        public ICollection<Bug> BugsCreated { get; set; } = new HashSet<Bug>();
 
-        public ICollection<Project> Projects { get; set; } = new HashSet<Project>();
+        public ICollection<BugEmployee> EmployeeBugs { get; set; } = new HashSet<BugEmployee>();
+
+        public ICollection<ProjectEmployee> EmployeeProjects { get; set; } = new HashSet<ProjectEmployee>();
 
         public ICollection<Comment> Comments { get; set; } = new HashSet<Comment>();
 

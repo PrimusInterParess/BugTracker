@@ -3,28 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace BugTracker.Infrastructure.Migrations
+namespace BugTracker.Infrastructure.Data.Migrations
 {
-    public partial class initial : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Administrators",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(320)", maxLength: 320, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Administrators", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -90,30 +74,6 @@ namespace BugTracker.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Organizations",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    StreetName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LogoUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StreetNumber = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    TownName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Country = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    AdministratiorId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Organizations", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Organizations_Administrators_AdministratiorId",
-                        column: x => x.AdministratiorId,
-                        principalTable: "Administrators",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -132,6 +92,28 @@ namespace BugTracker.Infrastructure.Migrations
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Administrators",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(320)", maxLength: 320, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Administrators", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Administrators_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -220,6 +202,29 @@ namespace BugTracker.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Organizations",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    StreetName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LogoUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StreetNumber = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    TownName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Country = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    AdministratiorId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Organizations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Organizations_Administrators_AdministratiorId",
+                        column: x => x.AdministratiorId,
+                        principalTable: "Administrators",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Departments",
                 columns: table => new
                 {
@@ -235,8 +240,7 @@ namespace BugTracker.Infrastructure.Migrations
                         name: "FK_Departments_Organizations_OrganizationId",
                         column: x => x.OrganizationId,
                         principalTable: "Organizations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -246,19 +250,24 @@ namespace BugTracker.Infrastructure.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(320)", maxLength: 320, nullable: false),
-                    OrganizationId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    OrganizationId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     DepartmentId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Employees", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Employees_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_Employees_Departments_DepartmentId",
                         column: x => x.DepartmentId,
                         principalTable: "Departments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Employees_Organizations_OrganizationId",
                         column: x => x.OrganizationId,
@@ -275,7 +284,7 @@ namespace BugTracker.Infrastructure.Migrations
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DueDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    OrganizationId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    OrganizationId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     DepartmentId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
@@ -285,8 +294,7 @@ namespace BugTracker.Infrastructure.Migrations
                         name: "FK_Projects_Departments_DepartmentId",
                         column: x => x.DepartmentId,
                         principalTable: "Departments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Projects_Organizations_OrganizationId",
                         column: x => x.OrganizationId,
@@ -306,13 +314,24 @@ namespace BugTracker.Infrastructure.Migrations
                     AppearedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DueDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ProjectId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    OrganizationId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OrganizationId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    DepartmentId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CreatedById = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Bugs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Bugs_Departments_DepartmentId",
+                        column: x => x.DepartmentId,
+                        principalTable: "Departments",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Bugs_Employees_CreatedById",
+                        column: x => x.CreatedById,
+                        principalTable: "Employees",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Bugs_Organizations_OrganizationId",
                         column: x => x.OrganizationId,
@@ -322,65 +341,62 @@ namespace BugTracker.Infrastructure.Migrations
                         name: "FK_Bugs_Priorities_PriorityId",
                         column: x => x.PriorityId,
                         principalTable: "Priorities",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Bugs_Projects_ProjectId",
                         column: x => x.ProjectId,
                         principalTable: "Projects",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Bugs_Status_StatusId",
                         column: x => x.StatusId,
                         principalTable: "Status",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "EmployeeProject",
+                name: "ProjectsEmployees",
                 columns: table => new
                 {
-                    EmployeesId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProjectsId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    EmployeeId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProjectId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EmployeeProject", x => new { x.EmployeesId, x.ProjectsId });
+                    table.PrimaryKey("PK_ProjectsEmployees", x => new { x.EmployeeId, x.ProjectId });
                     table.ForeignKey(
-                        name: "FK_EmployeeProject_Employees_EmployeesId",
-                        column: x => x.EmployeesId,
+                        name: "FK_ProjectsEmployees_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
                         principalTable: "Employees",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EmployeeProject_Projects_ProjectsId",
-                        column: x => x.ProjectsId,
+                        name: "FK_ProjectsEmployees_Projects_ProjectId",
+                        column: x => x.ProjectId,
                         principalTable: "Projects",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "BugEmployee",
+                name: "BugsEmployees",
                 columns: table => new
                 {
-                    BugEmployeesId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    EmployeeBugsId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    BugId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    EmployeeId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BugEmployee", x => new { x.BugEmployeesId, x.EmployeeBugsId });
+                    table.PrimaryKey("PK_BugsEmployees", x => new { x.BugId, x.EmployeeId });
                     table.ForeignKey(
-                        name: "FK_BugEmployee_Bugs_EmployeeBugsId",
-                        column: x => x.EmployeeBugsId,
+                        name: "FK_BugsEmployees_Bugs_BugId",
+                        column: x => x.BugId,
                         principalTable: "Bugs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_BugEmployee_Employees_BugEmployeesId",
-                        column: x => x.BugEmployeesId,
+                        name: "FK_BugsEmployees_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
                         principalTable: "Employees",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -394,7 +410,8 @@ namespace BugTracker.Infrastructure.Migrations
                     Content = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     BugId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EditedOn = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -403,15 +420,19 @@ namespace BugTracker.Infrastructure.Migrations
                         name: "FK_Comments_Bugs_BugId",
                         column: x => x.BugId,
                         principalTable: "Bugs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Comments_Employees_UserId",
                         column: x => x.UserId,
                         principalTable: "Employees",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Administrators_UserId",
+                table: "Administrators",
+                column: "UserId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -453,9 +474,14 @@ namespace BugTracker.Infrastructure.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BugEmployee_EmployeeBugsId",
-                table: "BugEmployee",
-                column: "EmployeeBugsId");
+                name: "IX_Bugs_CreatedById",
+                table: "Bugs",
+                column: "CreatedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bugs_DepartmentId",
+                table: "Bugs",
+                column: "DepartmentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bugs_OrganizationId",
@@ -478,6 +504,11 @@ namespace BugTracker.Infrastructure.Migrations
                 column: "StatusId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BugsEmployees_EmployeeId",
+                table: "BugsEmployees",
+                column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Comments_BugId",
                 table: "Comments",
                 column: "BugId");
@@ -493,11 +524,6 @@ namespace BugTracker.Infrastructure.Migrations
                 column: "OrganizationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmployeeProject_ProjectsId",
-                table: "EmployeeProject",
-                column: "ProjectsId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Employees_DepartmentId",
                 table: "Employees",
                 column: "DepartmentId");
@@ -506,6 +532,12 @@ namespace BugTracker.Infrastructure.Migrations
                 name: "IX_Employees_OrganizationId",
                 table: "Employees",
                 column: "OrganizationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employees_UserId",
+                table: "Employees",
+                column: "UserId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Organizations_AdministratiorId",
@@ -521,6 +553,11 @@ namespace BugTracker.Infrastructure.Migrations
                 name: "IX_Projects_OrganizationId",
                 table: "Projects",
                 column: "OrganizationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProjectsEmployees_ProjectId",
+                table: "ProjectsEmployees",
+                column: "ProjectId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -541,19 +578,16 @@ namespace BugTracker.Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "BugEmployee");
+                name: "BugsEmployees");
 
             migrationBuilder.DropTable(
                 name: "Comments");
 
             migrationBuilder.DropTable(
-                name: "EmployeeProject");
+                name: "ProjectsEmployees");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Bugs");
@@ -578,6 +612,9 @@ namespace BugTracker.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Administrators");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }

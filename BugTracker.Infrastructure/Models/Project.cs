@@ -1,4 +1,6 @@
-﻿namespace BugTracker.Infrastructure.Data.Models
+﻿using BugTracker.Infrastructure.Models;
+
+namespace BugTracker.Infrastructure.Data.Models
 {
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
@@ -32,7 +34,7 @@
 
         public ICollection<Bug> Bugs { get; set; } = new HashSet<Bug>();
 
-        public ICollection<Employee> Employees { get; set; } = new HashSet<Employee>();
+        public ICollection<ProjectEmployee> ProjectEmployees { get; set; } = new HashSet<ProjectEmployee>();
 
     }
 }

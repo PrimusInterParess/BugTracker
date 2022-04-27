@@ -42,10 +42,18 @@
 
         public Organization Organization { get; set; }
 
-        public string CreatedBy { get; set; }
+        public string? DepartmentId { get; set; }
+
+        public Department Department { get; set; }
+
+        public string CreatedById { get; set; }
+
+        public Employee CreatedBy { get; set; }
 
         public string ModifiedBy { get; set; }
-        public ICollection<Employee> BugEmployees { get; set; } = new HashSet<Employee>();
+
+
+        public ICollection<BugEmployee> BugEmployees { get; set; } = new HashSet<BugEmployee>();
 
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
 

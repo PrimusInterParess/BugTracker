@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace BugTracker.Infrastructure.Migrations
+namespace BugTracker.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(BugTrackerDbContext))]
     partial class BugTrackerDbContextModelSnapshot : ModelSnapshot
@@ -22,21 +22,6 @@ namespace BugTracker.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("BugEmployee", b =>
-                {
-                    b.Property<string>("BugEmployeesId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("EmployeeBugsId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("BugEmployeesId", "EmployeeBugsId");
-
-                    b.HasIndex("EmployeeBugsId");
-
-                    b.ToTable("BugEmployee");
-                });
-
             modelBuilder.Entity("BugTracker.Infrastructure.Data.Models.Bug", b =>
                 {
                     b.Property<string>("Id")
@@ -45,9 +30,13 @@ namespace BugTracker.Infrastructure.Migrations
                     b.Property<DateTime>("AppearedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("CreatedBy")
+                    b.Property<string>("CreatedById")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("DepartmentId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -62,6 +51,7 @@ namespace BugTracker.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("OrganizationId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("PriorityId")
@@ -82,6 +72,10 @@ namespace BugTracker.Infrastructure.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("DepartmentId");
 
                     b.HasIndex("OrganizationId");
 
@@ -139,17 +133,21 @@ namespace BugTracker.Infrastructure.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("OrganizationId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
 
                     b.HasIndex("OrganizationId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Employees");
                 });
@@ -239,6 +237,7 @@ namespace BugTracker.Infrastructure.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("OrganizationId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -292,11 +291,29 @@ namespace BugTracker.Infrastructure.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
                     b.ToTable("Administrators");
+                });
+
+            modelBuilder.Entity("BugTracker.Infrastructure.Models.BugEmployee", b =>
+                {
+                    b.Property<string>("BugId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("EmployeeId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("BugId", "EmployeeId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("BugsEmployees");
                 });
 
             modelBuilder.Entity("BugTracker.Infrastructure.Models.Comment", b =>
@@ -316,6 +333,9 @@ namespace BugTracker.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("EditedOn")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -327,6 +347,21 @@ namespace BugTracker.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("BugTracker.Infrastructure.Models.ProjectEmployee", b =>
+                {
+                    b.Property<string>("EmployeeId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProjectId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("EmployeeId", "ProjectId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("ProjectsEmployees");
                 });
 
             modelBuilder.Entity("BugTracker.Infrastructure.Models.User", b =>
@@ -397,21 +432,6 @@ namespace BugTracker.Infrastructure.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("EmployeeProject", b =>
-                {
-                    b.Property<string>("EmployeesId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProjectsId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("EmployeesId", "ProjectsId");
-
-                    b.HasIndex("ProjectsId");
-
-                    b.ToTable("EmployeeProject");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -551,44 +571,47 @@ namespace BugTracker.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("BugEmployee", b =>
-                {
-                    b.HasOne("BugTracker.Infrastructure.Data.Models.Employee", null)
-                        .WithMany()
-                        .HasForeignKey("BugEmployeesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BugTracker.Infrastructure.Data.Models.Bug", null)
-                        .WithMany()
-                        .HasForeignKey("EmployeeBugsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("BugTracker.Infrastructure.Data.Models.Bug", b =>
                 {
+                    b.HasOne("BugTracker.Infrastructure.Data.Models.Employee", "CreatedBy")
+                        .WithMany("BugsCreated")
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("BugTracker.Infrastructure.Data.Models.Department", "Department")
+                        .WithMany("Bugs")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("BugTracker.Infrastructure.Data.Models.Organization", "Organization")
-                        .WithMany()
-                        .HasForeignKey("OrganizationId");
+                        .WithMany("Bugs")
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.HasOne("BugTracker.Infrastructure.Data.Models.Priority", "Priority")
                         .WithMany("PriorityBugs")
                         .HasForeignKey("PriorityId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BugTracker.Infrastructure.Data.Models.Project", "Project")
                         .WithMany("Bugs")
                         .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BugTracker.Infrastructure.Data.Models.Status", "Status")
                         .WithMany("StatusBugs")
                         .HasForeignKey("StatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("Department");
 
                     b.Navigation("Organization");
 
@@ -604,7 +627,7 @@ namespace BugTracker.Infrastructure.Migrations
                     b.HasOne("BugTracker.Infrastructure.Data.Models.Organization", "Organization")
                         .WithMany("Departments")
                         .HasForeignKey("OrganizationId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Organization");
@@ -615,12 +638,20 @@ namespace BugTracker.Infrastructure.Migrations
                     b.HasOne("BugTracker.Infrastructure.Data.Models.Department", "Department")
                         .WithMany("DepartmentEmployees")
                         .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BugTracker.Infrastructure.Data.Models.Organization", "Organization")
                         .WithMany("OrganizationEmployees")
-                        .HasForeignKey("OrganizationId");
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("BugTracker.Infrastructure.Models.User", null)
+                        .WithOne()
+                        .HasForeignKey("BugTracker.Infrastructure.Data.Models.Employee", "UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Department");
 
@@ -632,7 +663,7 @@ namespace BugTracker.Infrastructure.Migrations
                     b.HasOne("BugTracker.Infrastructure.Models.Administrator", "Administrator")
                         .WithMany("Organizations")
                         .HasForeignKey("AdministratiorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Administrator");
@@ -643,16 +674,46 @@ namespace BugTracker.Infrastructure.Migrations
                     b.HasOne("BugTracker.Infrastructure.Data.Models.Department", "Department")
                         .WithMany("Projects")
                         .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BugTracker.Infrastructure.Data.Models.Organization", "Organization")
                         .WithMany("OrganizationProjects")
-                        .HasForeignKey("OrganizationId");
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("Department");
 
                     b.Navigation("Organization");
+                });
+
+            modelBuilder.Entity("BugTracker.Infrastructure.Models.Administrator", b =>
+                {
+                    b.HasOne("BugTracker.Infrastructure.Models.User", null)
+                        .WithOne()
+                        .HasForeignKey("BugTracker.Infrastructure.Models.Administrator", "UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BugTracker.Infrastructure.Models.BugEmployee", b =>
+                {
+                    b.HasOne("BugTracker.Infrastructure.Data.Models.Bug", "Bug")
+                        .WithMany("BugEmployees")
+                        .HasForeignKey("BugId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BugTracker.Infrastructure.Data.Models.Employee", "Employee")
+                        .WithMany("EmployeeBugs")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Bug");
+
+                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("BugTracker.Infrastructure.Models.Comment", b =>
@@ -660,13 +721,13 @@ namespace BugTracker.Infrastructure.Migrations
                     b.HasOne("BugTracker.Infrastructure.Data.Models.Bug", "Bug")
                         .WithMany("Comments")
                         .HasForeignKey("BugId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BugTracker.Infrastructure.Data.Models.Employee", "User")
                         .WithMany("Comments")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Bug");
@@ -674,19 +735,23 @@ namespace BugTracker.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("EmployeeProject", b =>
+            modelBuilder.Entity("BugTracker.Infrastructure.Models.ProjectEmployee", b =>
                 {
-                    b.HasOne("BugTracker.Infrastructure.Data.Models.Employee", null)
-                        .WithMany()
-                        .HasForeignKey("EmployeesId")
+                    b.HasOne("BugTracker.Infrastructure.Data.Models.Employee", "Employee")
+                        .WithMany("EmployeeProjects")
+                        .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BugTracker.Infrastructure.Data.Models.Project", null)
-                        .WithMany()
-                        .HasForeignKey("ProjectsId")
+                    b.HasOne("BugTracker.Infrastructure.Data.Models.Project", "Project")
+                        .WithMany("ProjectEmployees")
+                        .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -742,11 +807,15 @@ namespace BugTracker.Infrastructure.Migrations
 
             modelBuilder.Entity("BugTracker.Infrastructure.Data.Models.Bug", b =>
                 {
+                    b.Navigation("BugEmployees");
+
                     b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("BugTracker.Infrastructure.Data.Models.Department", b =>
                 {
+                    b.Navigation("Bugs");
+
                     b.Navigation("DepartmentEmployees");
 
                     b.Navigation("Projects");
@@ -754,11 +823,19 @@ namespace BugTracker.Infrastructure.Migrations
 
             modelBuilder.Entity("BugTracker.Infrastructure.Data.Models.Employee", b =>
                 {
+                    b.Navigation("BugsCreated");
+
                     b.Navigation("Comments");
+
+                    b.Navigation("EmployeeBugs");
+
+                    b.Navigation("EmployeeProjects");
                 });
 
             modelBuilder.Entity("BugTracker.Infrastructure.Data.Models.Organization", b =>
                 {
+                    b.Navigation("Bugs");
+
                     b.Navigation("Departments");
 
                     b.Navigation("OrganizationEmployees");
@@ -774,6 +851,8 @@ namespace BugTracker.Infrastructure.Migrations
             modelBuilder.Entity("BugTracker.Infrastructure.Data.Models.Project", b =>
                 {
                     b.Navigation("Bugs");
+
+                    b.Navigation("ProjectEmployees");
                 });
 
             modelBuilder.Entity("BugTracker.Infrastructure.Data.Models.Status", b =>
