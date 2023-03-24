@@ -1,2 +1,2 @@
 # BugTracker
-Failure
+System for managing work procecess
